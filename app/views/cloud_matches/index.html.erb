@@ -1,0 +1,27 @@
+<h1>Listing cloud_matches</h1>
+
+<table>
+  <tr>
+    <th>Match list</th>
+    <th>And match</th>
+    <th>Cloud</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @cloud_matches.each do |cloud_match| %>
+  <tr>
+    <td><%= cloud_match.match_list %></td>
+    <td><%= cloud_match.and_match %></td>
+    <td><%= cloud_match.cloud_id %></td>
+    <td><%= link_to 'Show', cloud_match %></td>
+    <td><%= link_to 'Edit', edit_cloud_match_path(cloud_match) %></td>
+    <td><%= link_to 'Destroy', cloud_match, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Cloud match', new_cloud_match_path %>

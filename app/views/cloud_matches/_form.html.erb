@@ -1,0 +1,29 @@
+<%= form_for(@cloud_match) do |f| %>
+  <% if @cloud_match.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@cloud_match.errors.count, "error") %> prohibited this cloud_match from being saved:</h2>
+
+      <ul>
+      <% @cloud_match.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :match_list %><br />
+    <%= f.text_field :match_list %>
+  </div>
+  <div class="field">
+    <%= f.label :and_match %><br />
+    <%= f.check_box :and_match %>
+  </div>
+  <div class="field">
+    <%= f.label :cloud_id %><br />
+    <%= f.number_field :cloud_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

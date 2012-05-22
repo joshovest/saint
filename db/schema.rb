@@ -11,7 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120521221055) do
+ActiveRecord::Schema.define(:version => 20120522162309) do
+
+  create_table "brand_matches", :force => true do |t|
+    t.string   "match_list"
+    t.string   "exclude_list"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "cloud_matches", :force => true do |t|
+    t.string   "match_list"
+    t.boolean  "and_match"
+    t.integer  "cloud_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "clouds", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "sites", :force => true do |t|
     t.string   "name"

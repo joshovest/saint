@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  match_list: MyString
+  and_match: false
+  cloud_id: 1
+
+two:
+  match_list: MyString
+  and_match: false
+  cloud_id: 1

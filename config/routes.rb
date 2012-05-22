@@ -1,4 +1,10 @@
 Saint::Application.routes.draw do
+  resources :cloud_matches
+
+  resources :clouds
+
+  resources :brand_matches
+
   resources :sites
 
   resources :suites

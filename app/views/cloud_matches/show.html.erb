@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Match list:</b>
+  <%= @cloud_match.match_list %>
+</p>
+
+<p>
+  <b>And match:</b>
+  <%= @cloud_match.and_match %>
+</p>
+
+<p>
+  <b>Cloud:</b>
+  <%= @cloud_match.cloud_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_cloud_match_path(@cloud_match) %> |
+<%= link_to 'Back', cloud_matches_path %>

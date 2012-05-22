@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Match list:</b>
+  <%= @brand_match.match_list %>
+</p>
+
+<p>
+  <b>Exclude list:</b>
+  <%= @brand_match.exclude_list %>
+</p>
+
+
+<%= link_to 'Edit', edit_brand_match_path(@brand_match) %> |
+<%= link_to 'Back', brand_matches_path %>
