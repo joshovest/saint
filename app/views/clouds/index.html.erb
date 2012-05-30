@@ -1,23 +1,21 @@
-<h1>Listing clouds</h1>
+<%= provide(:title, 'All clouds') %>
+<h1>All clouds</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<%= will_paginate %>
 
-<% @clouds.each do |cloud| %>
-  <tr>
-    <td><%= cloud.name %></td>
-    <td><%= link_to 'Show', cloud %></td>
-    <td><%= link_to 'Edit', edit_cloud_path(cloud) %></td>
-    <td><%= link_to 'Destroy', cloud, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
+<div>
+	<%= link_to "&rsaquo; Add new cloud".html_safe, new_cloud_path %>
+</div>
+
+<table class="data" cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<th>Cloud name</th>
+		<th>&nbsp;</th>
+	</tr>
+	<%= render @clouds %>
 </table>
 
-<br />
+<%= will_paginate %>
 
-<%= link_to 'New Cloud', new_cloud_path %>
+
+<%= @matches %>

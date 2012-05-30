@@ -1,0 +1,6 @@
+<tr>
+	<td><%= cloud.name %></td>
+	<td>
+		<%= link_to 'edit', edit_cloud_path(cloud) %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= link_to 'delete', cloud, confirm: 'Are you sure?', method: :delete %>
+	</td>
+</tr>

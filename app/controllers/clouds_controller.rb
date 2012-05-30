@@ -1,85 +1,43 @@
 class CloudsController < ApplicationController
-  # GET /clouds
-  # GET /clouds.json
   def index
-    @clouds = Cloud.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @clouds }
-    end
+    @clouds = Cloud.paginate(page: params[:page])
   end
 
-  # GET /clouds/1
-  # GET /clouds/1.json
-  def show
-    @cloud = Cloud.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @cloud }
-    end
-  end
-
-  # GET /clouds/new
-  # GET /clouds/new.json
   def new
     @cloud = Cloud.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @cloud }
-    end
   end
 
-  # GET /clouds/1/edit
   def edit
     @cloud = Cloud.find(params[:id])
   end
 
-  # POST /clouds
-  # POST /clouds.json
   def create
     @cloud = Cloud.new(params[:cloud])
-
-    respond_to do |format|
-      if @cloud.save
-        format.html { redirect_to clouds_path, notice: 'Cloud was successfully created.' }
-        format.json { render json: @cloud, status: :created, location: @cloud }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @cloud.errors, status: :unprocessable_entity }
-      end
+    
+    if @cloud.save
+      flash[:success] = 'Cloud (' + params[:cloud][:name] + ') has been successfully created.'
+      redirect_to clouds_path
+    else
+      render 'new'
     end
   end
 
-  # PUT /clouds/1
-  # PUT /clouds/1.json
   def update
     @cloud = Cloud.find(params[:id])
-
-    respond_to do |format|
-      if @cloud.update_attributes(params[:cloud])
-        format.html { redirect_to clouds_path, notice: 'Cloud was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @cloud.errors, status: :unprocessable_entity }
-      end
+    
+    if @cloud.update_attributes(params[:cloud])
+      flash[:success] = 'Cloud (' + params[:cloud][:name] + ') has been successfully updated.'
+      redirect_to clouds_path
+    else
+      render 'edit'
     end
   end
 
-  # DELETE /clouds/1
-  # DELETE /clouds/1.json
   def destroy
     @cloud = Cloud.find(params[:id])
     @cloud.destroy
     
-    # add code to remove all cloud_matches with this cloud
-
-    respond_to do |format|
-      format.html { redirect_to clouds_path }
-      format.json { head :no_content }
-    end
+    flash[:success] = 'Cloud (' + @cloud.name + ') and all matches have been successfully deleted.'
+    redirect_to clouds_path
   end
 end

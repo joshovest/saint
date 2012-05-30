@@ -7,7 +7,6 @@ class Site < ActiveRecord::Base
   
   def prep_list_for_save
     self.suite_list = self.suite_list.gsub("\n", ",").gsub("\r", "")
-    #{ |site| site.suite_list = site.suite_list.gsub("\n", ",").gsub("\r", "") }
   end
   
   def prep_list_for_form

@@ -1,11 +1,15 @@
-<%= form_for(@cloud) do |f| %>
-  <%= render 'shared/error_messages', obj:@cloud %>
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for(@cloud) do |f| %>
+			<%= render 'shared/error_messages', obj:@cloud %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="actions">
-    <%= f.submit lbl, class:'btn btn-large btn-primary' %>
-  </div>
-<% end %>
+			<div class="field">
+				<%= f.label :name %>
+				<%= f.text_field :name %>
+			</div>
+			<div class="actions">
+				<%= f.submit lbl, class:'btn btn-large btn-primary' %>
+			</div>
+		<% end %>
+	</div>
+</div>

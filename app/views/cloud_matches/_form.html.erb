@@ -1,29 +1,24 @@
-<%= form_for(@cloud_match) do |f| %>
-  <% if @cloud_match.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@cloud_match.errors.count, "error") %> prohibited this cloud_match from being saved:</h2>
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for(@cloud_match) do |f| %>
+			<%= render 'shared/error_messages', obj:@cloud_match %>
 
-      <ul>
-      <% @cloud_match.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :match_list %><br />
-    <%= f.text_field :match_list %>
-  </div>
-  <div class="field">
-    <%= f.label :and_match %><br />
-    <%= f.check_box :and_match %>
-  </div>
-  <div class="field">
-    <%= f.label :cloud_id %><br />
-    <%= f.number_field :cloud_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+			<div class="field">
+				<%= f.label :cloud_id %>
+			    <%= f.select :cloud_id, options_from_collection_for_select(Cloud.find(:all, order:"name"), "id", "name"), prompt:"Please choose one" %>
+			</div>
+			<div class="field">
+				<%= f.label 'Match type' %>
+				<%= f.select :and_match, { "AND" => "true", "OR" => "false" } %>
+			</div>
+			<div class="field">
+				<%= f.label 'Match list (put each on a new line)' %>
+				<%= f.text_area :match_list %>
+			</div>
+			
+			<div class="actions">
+				<%= f.submit lbl, class:'btn btn-large btn-primary' %>
+			</div>
+		<% end %>
+	</div>
+</div>

@@ -1,0 +1,8 @@
+<tr>
+	<td>[ORDER GOES HERE]</td>
+	<td><%= brand_match.prep_match_for_display %></td>
+	<td><%= brand_match.prep_exclude_for_display %></td>
+	<td>
+		<%= link_to 'edit', edit_brand_match_path(brand_match) %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= link_to 'delete', brand_match, confirm: 'Are you sure?', method: :delete %>
+	</td>
+</tr>

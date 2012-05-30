@@ -1,25 +1,19 @@
-<%= form_for(@brand_match) do |f| %>
-  <% if @brand_match.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@brand_match.errors.count, "error") %> prohibited this brand_match from being saved:</h2>
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for(@brand_match) do |f| %>
+			<%= render 'shared/error_messages', obj:@brand_match %>
 
-      <ul>
-      <% @brand_match.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :match_list %><br />
-    <%= f.text_field :match_list %>
-  </div>
-  <div class="field">
-    <%= f.label :exclude_list %><br />
-    <%= f.text_field :exclude_list %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+			<div class="field">
+				<%= f.label 'Match list (put each on a new line)' %>
+				<%= f.text_area :match_list %>
+			</div>
+			<div class="field">
+				<%= f.label 'Exclude list (put each on a new line)' %>
+				<%= f.text_area :exclude_list %>
+			</div>
+			<div class="actions">
+				<%= f.submit lbl, class:'btn btn-large btn-primary' %>
+			</div>
+		<% end %>
+	</div>
+</div>

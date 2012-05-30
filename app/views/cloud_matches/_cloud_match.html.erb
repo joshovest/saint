@@ -1,0 +1,9 @@
+<tr>
+	<td>[ORDER GOES HERE]</td>
+	<td><%= cloud_match.cloud.name %></td>
+	<td><%= cloud_match.and_match ? 'AND' : 'OR' %></td>
+	<td><%= cloud_match.prep_list_for_display %></td>
+	<td>
+		<%= link_to 'edit', edit_cloud_match_path(cloud_match) %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= link_to 'delete', cloud_match, confirm: 'Are you sure?', method: :delete %>
+	</td>
+</tr>

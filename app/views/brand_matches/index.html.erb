@@ -1,25 +1,16 @@
-<h1>Listing brand_matches</h1>
+<%= provide(:title, 'All brand matches') %>
+<h1>All brand matches</h1>
 
-<table>
-  <tr>
-    <th>Match list</th>
-    <th>Exclude list</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<div>
+	<%= link_to "&rsaquo; Add new brand match".html_safe, new_brand_match_path %>
+</div>
 
-<% @brand_matches.each do |brand_match| %>
-  <tr>
-    <td><%= brand_match.match_list %></td>
-    <td><%= brand_match.exclude_list %></td>
-    <td><%= link_to 'Show', brand_match %></td>
-    <td><%= link_to 'Edit', edit_brand_match_path(brand_match) %></td>
-    <td><%= link_to 'Destroy', brand_match, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
+<table class="data" cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<th>Match</th>
+		<th>Match list</th>
+		<th>Exclude list</th>
+		<th>&nbsp;</th>
+	</tr>
+	<%= render @brand_matches %>
 </table>
-
-<br />
-
-<%= link_to 'New Brand match', new_brand_match_path %>

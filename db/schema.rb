@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120525180455) do
+ActiveRecord::Schema.define(:version => 20120530212109) do
 
   create_table "brand_matches", :force => true do |t|
     t.string   "match_list"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(:version => 20120525180455) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "cloud_matches", ["cloud_id"], :name => "index_cloud_matches_on_cloud_id"
 
   create_table "clouds", :force => true do |t|
     t.string   "name"
