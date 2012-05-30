@@ -1,0 +1,7 @@
+<tr>
+	<td><%= site.name %></td>
+	<td><%= site.prep_list_for_display %></td>
+	<td>
+		<%= link_to 'edit', edit_site_path(site) %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= link_to 'delete', site, confirm: 'Are you sure?', method: :delete %>
+	</td>
+</tr>

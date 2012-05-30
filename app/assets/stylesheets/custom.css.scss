@@ -9,6 +9,18 @@ $grayLighter: lighten($grayMediumLight, 50%);
 	box-sizing:border-box;
 }
 
+@mixin border_std {
+	border:1px solid #ccc;
+	border:1px solid rgba(0, 0, 0, 0.15);
+}
+
+@mixin border_round {
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	-ms-border-radius:4px;
+	border-radius:4px;
+}
+
 /* universal */
 
 html {
@@ -61,15 +73,7 @@ p {
 }
 
 #logo {
-	float:left;
-	margin-right:10px;
-	font-size:1.7em;
-	color:#fff;
-	text-transform:uppercase;
-	letter-spacing:-1px;
-	padding-top:9px;
-	font-weight:bold;
-	line-height:1;
+	position:absolute;
 }
 
 #logo:hover {
@@ -77,33 +81,16 @@ p {
 	text-decoration:none;
 }
 
+.content {
+	margin-top:50px;
+}
+
 footer {
 	margin-top:45px;
 	padding-top:5px;
 	border-top:1px solid #eaeaea;
 	color:#999;
-}
-
-footer a {
-	color:#555;
-}  
-
-footer a:hover { 
-	color:#222;
-}
-
-footer small {
-	float:left;
-}
-
-footer ul {
-	float:right;
-	list-style:none;
-}
-
-footer ul li {
-	float:left;
-	margin-left:10px;
+	text-align:right;
 }
 
 .debug_dump {
@@ -123,6 +110,9 @@ input, textarea, select, .uneditable-input {
 	margin-bottom:15px;
 	@include box_sizing;
 }
+textarea {
+	max-height:150px;
+}
 
 #error_explanation {
 	color:#f00;
@@ -137,16 +127,48 @@ input, textarea, select, .uneditable-input {
 	@extend .error;
 }
  
-/* users index */
-.users {
-	list-style:none;
-	margin:0;
-	li {
-		overflow:auto;
-		padding:10px 0;
-		border-top:1px solid $grayLighter;
-		&:last-child {
-			border-bottom:1px solid $grayLighter;
-		}
+/* tables */
+table.data {
+	max-width:100%;
+	border:0 none;
+	padding:0;
+	margin-top:20px;
+	tr {
+		vertical-align:top;
+	}
+	th, td {
+		@include box_sizing;
+		padding:5px 10px;
+		border:1px solid #ccc;
+		min-width:150px;
+	}
+	th {
+		border-top:0 none;
+		background:#222;
+		background:-moz-linear-gradient(top, #333333, #222222);
+		background:-ms-linear-gradient(top, #333333, #222222);
+		background:-webkit-gradient(linear, 0 0, 0 100%, from(#333333), to(#222222));
+		background:-webkit-linear-gradient(top, #333333, #222222);
+		background:-o-linear-gradient(top, #333333, #222222);
+		background:linear-gradient(top, #333333, #222222);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF333333', endColorstr='#FF222222', GradientType=0);
+		text-align:left;
+		font-size:14px;
+		font-weight:bold;
+		color:#fff;
+	}
+	th:first-child {
+		-moz-border-radius:4px 0 0 0;
+		-webkit-border-radius:4px 0 0 0;
+		-ms-border-radius:4px 0 0 0;
+		border-radius:4px 0 0 0;
+		border-left:0 none;
+	}
+	th:last-child {
+		-moz-border-radius:0 4px 0 0;
+		-webkit-border-radius:0 4px 0 0;
+		-ms-border-radius:0 4px 0 0;
+		border-radius:0 4px 0 0;
+		border-right:0 none;
 	}
 }

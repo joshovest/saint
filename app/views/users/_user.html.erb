@@ -1,6 +1,6 @@
-<li>
-	<%= link_to user.name, user %>
-	<% if current_user.admin? && !current_user?(user) %>
-	| <%= link_to "delete", user, method: :delete, confirm: "You sure?" %>
-	<% end %>
-</li>
+<tr>
+	<td><%= user.name %></td>
+	<td>
+		<%= link_to 'edit', edit_user_path(user) %><% if !current_user?(user) %>&nbsp;&nbsp;|&nbsp;&nbsp;<%= link_to "delete", user, method: :delete, confirm: "You sure?" %><% end %>
+	</td>
+</tr>

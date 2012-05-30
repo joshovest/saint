@@ -1,83 +1,43 @@
 class SitesController < ApplicationController
-  # GET /sites
-  # GET /sites.json
   def index
-    @sites = Site.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @sites }
-    end
+    @sites = Site.paginate(page: params[:page])
   end
-
-  # GET /sites/1
-  # GET /sites/1.json
-  def show
-    @site = Site.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @site }
-    end
-  end
-
-  # GET /sites/new
-  # GET /sites/new.json
+  
   def new
     @site = Site.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @site }
-    end
   end
 
-  # GET /sites/1/edit
   def edit
     @site = Site.find(params[:id])
+    @site.suite_list = @site.prep_list_for_form
   end
 
-  # POST /sites
-  # POST /sites.json
   def create
     @site = Site.new(params[:site])
-
-    respond_to do |format|
-      if @site.save
-        format.html { redirect_to @site, notice: 'Site was successfully created.' }
-        format.json { render json: @site, status: :created, location: @site }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @site.errors, status: :unprocessable_entity }
-      end
+    
+    if @site.save
+      flash[:success] = 'Site (' + params[:site][:name] + ') has been successfully created.'
+      redirect_to sites_path
+    else
+      render 'new'
     end
   end
 
-  # PUT /sites/1
-  # PUT /sites/1.json
   def update
     @site = Site.find(params[:id])
-
-    respond_to do |format|
-      if @site.update_attributes(params[:site])
-        format.html { redirect_to @site, notice: 'Site was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @site.errors, status: :unprocessable_entity }
-      end
+    
+    if @site.update_attributes(params[:site])
+      flash[:success] = 'Site (' + params[:site][:name] + ') has been successfully updated.'
+      redirect_to sites_path
+    else
+      render 'edit'
     end
   end
 
-  # DELETE /sites/1
-  # DELETE /sites/1.json
   def destroy
-    @site = Site.find(params[:id])
-    @site.destroy
-
-    respond_to do |format|
-      format.html { redirect_to sites_url }
-      format.json { head :no_content }
-    end
+    Site.find(params[:id]).destroy
+    
+    flash[:success] = 'Site (' + @site.name + ') has been successfully deleted.'
+    redirect_to sites_path
   end
 end

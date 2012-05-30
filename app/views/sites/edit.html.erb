@@ -1,6 +1,4 @@
-<h1>Editing site</h1>
+<%= provide(:title, 'Change site') %>
+<h1>Change site</h1>
 
-<%= render 'form' %>
-
-<%= link_to 'Show', @site %> |
-<%= link_to 'Back', sites_path %>
+<%= render 'form', lbl:'Save changes' %>

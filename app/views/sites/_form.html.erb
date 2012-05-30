@@ -1,25 +1,19 @@
-<%= form_for(@site) do |f| %>
-  <% if @site.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@site.errors.count, "error") %> prohibited this site from being saved:</h2>
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_for(@site) do |f| %>
+			<%= render 'shared/error_messages', obj:@site %>
 
-      <ul>
-      <% @site.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :suite_list %><br />
-    <%= f.text_field :suite_list %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+			<div class="field">
+				<%= f.label :name %>
+				<%= f.text_field :name %>
+			</div>
+			<div class="field">
+				<%= f.label 'Suite list (put each on a new line)' %>
+				<%= f.text_area :suite_list %>
+			</div>
+			<div class="actions">
+				<%= f.submit lbl, class:'btn btn-large btn-primary' %>
+			</div>
+		<% end %>
+	</div>
+</div>

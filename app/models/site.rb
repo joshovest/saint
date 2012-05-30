@@ -1,2 +1,20 @@
 class Site < ActiveRecord::Base
+  attr_accessible :name, :suite_list
+  before_save :prep_list_for_save
+  
+  validates :name, presence:true
+  validates :suite_list, presence:true
+  
+  def prep_list_for_save
+    self.suite_list = self.suite_list.gsub("\n", ",").gsub("\r", "")
+    #{ |site| site.suite_list = site.suite_list.gsub("\n", ",").gsub("\r", "") }
+  end
+  
+  def prep_list_for_form
+    suite_list = self.suite_list.gsub(",", "\r\n")
+  end
+  
+  def prep_list_for_display
+    suite_list = self.suite_list.gsub(",", "<br>").html_safe
+  end
 end

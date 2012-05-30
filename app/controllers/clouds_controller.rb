@@ -44,7 +44,7 @@ class CloudsController < ApplicationController
 
     respond_to do |format|
       if @cloud.save
-        format.html { redirect_to @cloud, notice: 'Cloud was successfully created.' }
+        format.html { redirect_to clouds_path, notice: 'Cloud was successfully created.' }
         format.json { render json: @cloud, status: :created, location: @cloud }
       else
         format.html { render action: "new" }
@@ -60,7 +60,7 @@ class CloudsController < ApplicationController
 
     respond_to do |format|
       if @cloud.update_attributes(params[:cloud])
-        format.html { redirect_to @cloud, notice: 'Cloud was successfully updated.' }
+        format.html { redirect_to clouds_path, notice: 'Cloud was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -74,9 +74,11 @@ class CloudsController < ApplicationController
   def destroy
     @cloud = Cloud.find(params[:id])
     @cloud.destroy
+    
+    # add code to remove all cloud_matches with this cloud
 
     respond_to do |format|
-      format.html { redirect_to clouds_url }
+      format.html { redirect_to clouds_path }
       format.json { head :no_content }
     end
   end

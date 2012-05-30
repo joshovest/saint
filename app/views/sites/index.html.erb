@@ -1,25 +1,19 @@
-<h1>Listing sites</h1>
+<%= provide(:title, 'All sites') %>
+<h1>All sites</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Suite list</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<%= will_paginate %>
 
-<% @sites.each do |site| %>
-  <tr>
-    <td><%= site.name %></td>
-    <td><%= site.suite_list %></td>
-    <td><%= link_to 'Show', site %></td>
-    <td><%= link_to 'Edit', edit_site_path(site) %></td>
-    <td><%= link_to 'Destroy', site, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
-<% end %>
+<div>
+	<%= link_to "&rsaquo; Add new site".html_safe, new_site_path %>
+</div>
+
+<table class="data" cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<th>Site name</th>
+		<th>Report suite list</th>
+		<th>&nbsp;</th>
+	</tr>
+	<%= render @sites %>
 </table>
 
-<br />
-
-<%= link_to 'New Site', new_site_path %>
+<%= will_paginate %>

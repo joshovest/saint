@@ -1,15 +1,4 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <b>Name:</b>
-  <%= @site.name %>
-</p>
-
-<p>
-  <b>Suite list:</b>
-  <%= @site.suite_list %>
-</p>
-
-
-<%= link_to 'Edit', edit_site_path(@site) %> |
-<%= link_to 'Back', sites_path %>
+<%= provide(:title, @site.name) %>
+<h1>Site: <%= @site.name %></h1>
+Report suites included in this site:<br><br>
+<%= @site.suite_list.gsub("\n", "<br>").html_safe %>
