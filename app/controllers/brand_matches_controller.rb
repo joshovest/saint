@@ -1,6 +1,6 @@
 class BrandMatchesController < ApplicationController
   def index
-    @brand_matches = BrandMatch.all()
+    @brand_matches = BrandMatch.order('brand_matches.position ASC, id')
   end
 
   def new
@@ -15,6 +15,7 @@ class BrandMatchesController < ApplicationController
 
   def create
     @brand_match = BrandMatch.new(params[:brand_match])
+    @brand_match.position = BrandMatch.all.length + 1 if @brand_match.position.nil?
     
     if @brand_match.save
       flash[:success] = 'Match has been successfully created.'
@@ -26,6 +27,7 @@ class BrandMatchesController < ApplicationController
 
   def update
     @brand_match = BrandMatch.find(params[:id])
+    @brand_match.position = BrandMatch.all.length + 1 if @brand_match.position.nil?
 
     if @brand_match.update_attributes(params[:brand_match])
       flash[:success] = 'Match has been successfully updated.'

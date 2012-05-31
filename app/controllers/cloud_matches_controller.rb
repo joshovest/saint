@@ -1,6 +1,6 @@
 class CloudMatchesController < ApplicationController
   def index
-    @cloud_matches = CloudMatch.all
+    @cloud_matches = CloudMatch.order('cloud_matches.position ASC, id')
   end
 
   def new
@@ -14,6 +14,7 @@ class CloudMatchesController < ApplicationController
 
   def create
     @cloud_match = CloudMatch.new(params[:cloud_match])
+    @cloud_match.position = CloudMatch.all.length + 1 if @cloud_match.position.nil?
     
     if @cloud_match.save
       flash[:success] = 'Match has been successfully created.'
@@ -25,6 +26,7 @@ class CloudMatchesController < ApplicationController
 
   def update
     @cloud_match = CloudMatch.find(params[:id])
+    @cloud_match.position = CloudMatch.all.length + 1 if @cloud_match.position.nil?
     
     if @cloud_match.update_attributes(params[:cloud_match])
       flash[:success] = 'Match has been successfully updated.'

@@ -1,5 +1,5 @@
 class BrandMatch < ActiveRecord::Base
-  attr_accessible :match_list, :exclude_list
+  attr_accessible :match_list, :exclude_list, :position
   before_save :prep_match_for_save
   before_save :prep_exclude_for_save
   
