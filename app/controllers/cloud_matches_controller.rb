@@ -43,4 +43,7 @@ class CloudMatchesController < ApplicationController
     flash[:success] = 'Match has been successfully deleted.'
     redirect_to cloud_matches_path
   end
+  
+  def upload
+  end
 end

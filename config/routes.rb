@@ -3,11 +3,19 @@ Saint::Application.routes.draw do
   match '/signin',	to: 'sessions#new'
   match '/signout',	to: 'sessions#destroy', via: :delete
 
-  resources :cloud_matches
+  resources :cloud_matches do
+    collection do
+      get 'upload'
+    end
+  end
 
   resources :clouds
 
-  resources :brand_matches
+  resources :brand_matches do
+    collection do
+      get 'upload'
+    end
+  end
 
   resources :sites
 
