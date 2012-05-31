@@ -1,16 +1,22 @@
 <%= provide(:title, 'All brand matches') %>
+
+<div id="save-alert" class="alert alert-success"></div>
 <h1>All brand matches</h1>
 
-<div>
-	<%= link_to "&rsaquo; Add new brand match".html_safe, new_brand_match_path %>
-</div>
+<%= render 'button-nav' %>
 
-<table class="data" cellpadding="0" cellspacing="0" border="0">
-	<tr>
-		<th>Match</th>
-		<th>Match list</th>
-		<th>Exclude list</th>
-		<th>&nbsp;</th>
-	</tr>
-	<%= render @brand_matches %>
+<table class="data sortable" cellpadding="0" cellspacing="0" border="0">
+	<thead>
+		<tr>
+			<th>Match</th>
+			<th>Match list</th>
+			<th>Exclude list</th>
+			<th>&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%= render @brand_matches %>
+	</tbody>
 </table>
+
+<%= render 'button-nav' %>

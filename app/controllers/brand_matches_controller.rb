@@ -45,4 +45,17 @@ class BrandMatchesController < ApplicationController
     flash[:success] = 'Match has been successfully deleted.'
     redirect_to brand_matches_path
   end
+  
+  def upload
+  end
+  
+  def sort
+    @brand_matches = BrandMatch.all
+    @brand_matches.each do |match|
+      match.position = params['match'].index(match.id.to_s) + 1
+      match.save
+    end
+  
+    render nothing: true
+  end
 end

@@ -126,13 +126,20 @@ textarea {
 	@extend .control-group;
 	@extend .error;
 }
+
+.button-nav {
+	width:100%;
+	float:left;
+	clear:both;
+	margin:25px 0;
+	a { margin-right:10px;}
+}
  
 /* tables */
 table.data {
 	max-width:100%;
 	border:0 none;
 	padding:0;
-	margin-top:20px;
 	tr {
 		vertical-align:top;
 	}
@@ -171,4 +178,9 @@ table.data {
 		border-radius:0 4px 0 0;
 		border-right:0 none;
 	}
+}
+
+#save-alert {
+	opacity:0;
+	-moz-transition:opacity 0.5s ease-in-out;
 }

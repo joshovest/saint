@@ -1,11 +1,9 @@
 <%= provide(:title, 'All clouds') %>
 <h1>All clouds</h1>
 
-<%= will_paginate %>
+<%= render 'button-nav' %>
 
-<div>
-	<%= link_to "&rsaquo; Add new cloud".html_safe, new_cloud_path %>
-</div>
+<%= will_paginate %>
 
 <table class="data" cellpadding="0" cellspacing="0" border="0">
 	<tr>
@@ -17,5 +15,4 @@
 
 <%= will_paginate %>
 
-
-<%= @matches %>
+<%= render 'button-nav' %>

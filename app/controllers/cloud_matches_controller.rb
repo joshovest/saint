@@ -48,4 +48,14 @@ class CloudMatchesController < ApplicationController
   
   def upload
   end
+  
+  def sort
+    @cloud_matches = CloudMatch.all
+    @cloud_matches.each do |match|
+      match.position = params['match'].index(match.id.to_s) + 1
+      match.save
+    end
+  
+    render nothing: true
+  end
 end

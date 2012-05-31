@@ -6,6 +6,7 @@ Saint::Application.routes.draw do
   resources :cloud_matches do
     collection do
       get 'upload'
+      post 'sort'
     end
   end
 
@@ -14,6 +15,7 @@ Saint::Application.routes.draw do
   resources :brand_matches do
     collection do
       get 'upload'
+      post 'sort'
     end
   end
 

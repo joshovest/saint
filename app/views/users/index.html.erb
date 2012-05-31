@@ -1,11 +1,9 @@
 <%= provide(:title, 'Manage users') %>
 <h1>Manage users</h1>
 
-<%= will_paginate %>
+<%= render 'button-nav' %>
 
-<div>
-	<%= link_to "&rsaquo; Add new user".html_safe, new_user_path %>
-</div>
+<%= will_paginate %>
 
 <table class="data" cellpadding="0" cellspacing="0" border="0">
 	<tr>
@@ -16,3 +14,5 @@
 </table>
 
 <%= will_paginate %>
+
+<%= render 'button-nav' %>
