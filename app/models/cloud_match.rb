@@ -1,8 +1,9 @@
 class CloudMatch < ActiveRecord::Base
-  attr_accessible :match_list, :exclude_list, :cloud_id, :and_match, :position
+  attr_accessible :match_list, :cloud_id, :and_match, :position
   belongs_to :cloud
   before_save :prep_list_for_save
   
+  validates :match_list, presence:true
   validates :cloud_id, presence:true
   
   def prep_list_for_save

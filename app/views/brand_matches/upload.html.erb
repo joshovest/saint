@@ -1,0 +1,19 @@
+<% provide(:title, "Upload new brand match file") %>
+<h1>Upload new brand match file</h1>
+
+<div class="row">
+	<div class="span6 offset3">
+		<%= form_tag(process_upload_brand_matches_path, multipart:true) do %>
+			<%= render 'shared/error_messages', obj:@upload_file %>
+
+			<div class="field">
+				<%= label_tag "upload_file_filename", "Upload CSV file", class:"inline" %>&nbsp;(<%= link_to "see template", "/templates/brand_matches.csv" %>)
+				<%= file_field 'upload_file', 'filename' %>
+			</div>
+		
+			<div class="action">
+				<%= submit_tag("Upload file", class: "btn btn-large btn-primary") %>
+			</div>
+		<% end %>
+	</div>
+</div>

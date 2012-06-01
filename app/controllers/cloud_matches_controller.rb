@@ -47,6 +47,42 @@ class CloudMatchesController < ApplicationController
   end
   
   def upload
+    @upload_file = UploadFile.new
+  end
+  
+  def process_upload
+    @upload_file = UploadFile.new
+    if !params[:upload_file].nil?
+      @upload_file.filename = params[:upload_file][:filename].original_filename
+      @path = @upload_file.save_file(params[:upload_file][:filename])
+    end
+    
+    if @upload_file.save && @path
+      count = 0
+      deleted = false
+      CSV.foreach(@path, :col_sep => ",") do |row|
+        # skip column headings
+        if count != 0
+          match = CloudMatch.new
+          match.match_list = row[0]
+          match.cloud_id = Cloud.find_by_name(row[1]).nil? ? nil : Cloud.find_by_name(row[1]).id
+          match.and_match = row[2] == 'AND' ? 1 : 0
+          match.position = CloudMatch.count
+          if match.valid? && !deleted
+            # start all over
+            CloudMatch.destroy_all
+            deleted = true
+          end
+          match.save
+        end
+        count += 1
+      end
+      
+      flash[:success] = "Your file was uploaded successfully!"
+      redirect_to cloud_matches_path
+    else
+      render "upload"
+    end
   end
   
   def sort

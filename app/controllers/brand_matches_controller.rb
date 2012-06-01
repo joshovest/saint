@@ -15,7 +15,7 @@ class BrandMatchesController < ApplicationController
 
   def create
     @brand_match = BrandMatch.new(params[:brand_match])
-    @brand_match.position = BrandMatch.all.length + 1 if @brand_match.position.nil?
+    @brand_match.position = BrandMatch.count + 1 if @brand_match.position.nil?
     
     if @brand_match.save
       flash[:success] = 'Match has been successfully created.'
@@ -27,7 +27,7 @@ class BrandMatchesController < ApplicationController
 
   def update
     @brand_match = BrandMatch.find(params[:id])
-    @brand_match.position = BrandMatch.all.length + 1 if @brand_match.position.nil?
+    @brand_match.position = BrandMatch.count + 1 if @brand_match.position.nil?
 
     if @brand_match.update_attributes(params[:brand_match])
       flash[:success] = 'Match has been successfully updated.'
@@ -47,6 +47,41 @@ class BrandMatchesController < ApplicationController
   end
   
   def upload
+    @upload_file = UploadFile.new
+  end
+  
+  def process_upload
+    @upload_file = UploadFile.new
+    if !params[:upload_file].nil?
+      @upload_file.filename = params[:upload_file][:filename].original_filename
+      @path = @upload_file.save_file(params[:upload_file][:filename])
+    end
+    
+    if @upload_file.save && @path
+      count = 0
+      deleted = false
+      CSV.foreach(@path, :col_sep => ",") do |row|
+        # skip column headings
+        if count != 0
+          match = BrandMatch.new
+          match.match_list = row[0]
+          match.exclude_list = row[1]
+          match.position = BrandMatch.count
+          if match.valid? && !deleted
+            # start all over
+            BrandMatch.destroy_all
+            deleted = true
+          end
+          match.save
+        end
+        count += 1
+      end
+      
+      flash[:success] = "Your file was uploaded successfully!"
+      redirect_to brand_matches_path
+    else
+      render "upload"
+    end
   end
   
   def sort

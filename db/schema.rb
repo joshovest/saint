@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120531180757) do
+ActiveRecord::Schema.define(:version => 20120601194407) do
 
   create_table "brand_matches", :force => true do |t|
     t.string   "match_list"
@@ -48,6 +48,12 @@ ActiveRecord::Schema.define(:version => 20120531180757) do
   create_table "suites", :force => true do |t|
     t.string   "name"
     t.string   "suite_list"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "upload_files", :force => true do |t|
+    t.string   "filename"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

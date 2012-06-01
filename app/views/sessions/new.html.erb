@@ -4,13 +4,19 @@
 	<div class="span6 offset3">
 		<%= form_tag sessions_path do %>
 
-		<%= label_tag :email %>
-		<%= text_field_tag :email %>
-
-		<%= label_tag :password %>
-		<%= password_field_tag :password %>
-
-		<%= submit_tag("Sign in", class: "btn btn-large btn-primary") %>
+		<div class="field">
+			<%= label_tag :email %>
+			<%= text_field_tag :email %>
+		</div>
+		
+		<div class="field">
+			<%= label_tag :password %>
+			<%= password_field_tag :password %>
+		</div>
+		
+		<div class="action">
+			<%= submit_tag("Sign in", class: "btn btn-large btn-primary") %>
+		</div>
 		<% end %>
 	</div>
 </div>
