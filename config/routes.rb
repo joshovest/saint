@@ -21,6 +21,8 @@ Saint::Application.routes.draw do
     end
   end
 
+  resources :classifier, only: [:index]
+  
   resources :sites
 
   resources :suites
