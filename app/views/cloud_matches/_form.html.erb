@@ -8,10 +8,6 @@
 			    <%= f.select :cloud_id, options_from_collection_for_select(Cloud.find(:all, order:"name"), "id", "name"), prompt:"Please choose one" %>
 			</div>
 			<div class="field">
-				<%= f.label 'Match type' %>
-				<%= f.select :and_match, { "AND" => "true", "OR" => "false" } %>
-			</div>
-			<div class="field">
 				<%= f.label 'Match list (put each on a new line)' %>
 				<%= f.text_area :match_list %>
 			</div>

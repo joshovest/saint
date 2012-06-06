@@ -58,6 +58,8 @@ class CloudMatchesController < ApplicationController
     end
     
     if @upload_file.save && @path
+      require 'csv'
+      
       count = 0
       deleted = false
       CSV.foreach(@path, :col_sep => ",") do |row|
@@ -66,7 +68,6 @@ class CloudMatchesController < ApplicationController
           match = CloudMatch.new
           match.match_list = row[0]
           match.cloud_id = Cloud.find_by_name(row[1]).nil? ? nil : Cloud.find_by_name(row[1]).id
-          match.and_match = row[2] == 'AND' ? 1 : 0
           match.position = CloudMatch.count
           if match.valid? && !deleted
             # start all over

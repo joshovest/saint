@@ -1,6 +1,8 @@
 class SitesController < ApplicationController
   def index
     @sites = Site.paginate(page: params[:page])
+    
+    @c = Classification.new({key: "SEO|Google|salesforce"})
   end
   
   def new

@@ -13,8 +13,10 @@ class ClassifierController < ApplicationController
     )
     
     @html = ""
-    sites = Site.find(:all)
-    sites.each do |s|
+    #sites = Site.find(:all)
+    s = Site.find(:last)
+    
+    #sites.each do |s|
       suite = s.suite_list.split(",").first
       none_rpt = @client.get_report "Report.QueueRanked", get_params(suite, [
         {
@@ -37,10 +39,12 @@ class ClassifierController < ApplicationController
         @html += "<h2>Unclassified Rows for <em>#{s.name}</em></h2>"
 	    @html += "<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">"
       
-        per_page = 5000
+        #per_page = 5000
+        per_page = 100
         current_page = 0
         current_rows = 0
         saint_row = 0
+        @saint_table = Array.new
         begin
           failure = false
           current_page += 1
@@ -61,13 +65,34 @@ class ClassifierController < ApplicationController
           if !unclassified_rpt["report"].nil?
             if !unclassified_rpt["report"]["data"].nil?
               if !unclassified_rpt["report"]["data"][0]["breakdown"].nil?
-                @html += "<tr><th colspan=\"15\">New Report - page #{current_page}</th></tr>"
+                @html += "<tr><th colspan=\"13\">New Report - page #{current_page}</th></tr>"
               
                 current_rows = unclassified_rpt["report"]["data"][0]["breakdown"].length
                 unclassified_rpt["report"]["data"][0]["breakdown"].each do |row|
 			      row["name"] = row["name"].gsub("%/", "/")
 			      row["name"] = HTMLEntities.new.decode row["name"]
-			      @html += "<tr><td>#{row["name"]}</td></tr>"
+			      
+			      saint_row = Classification.new({key: row["name"]})
+			      @saint_table << {row: saint_row.get_row}
+			      if saint_row.valid?
+			        @html += "<tr>"
+			        @html += "<td>#{saint_row["key"]}</td>"
+			        @html += "<td>#{saint_row["type"]}</td>"
+			        @html += "<td>#{saint_row["name"]}</td>"
+			        @html += "<td>#{saint_row["tld"]}</td>"
+			        @html += "<td>#{saint_row["name"]}</td>"
+			        @html += "<td>#{saint_row["country"]}</td>"
+			        @html += "<td>#{saint_row["branded"]}</td>"
+			        @html += "<td>#{saint_row["keyword_cloud"]}</td>"
+			        @html += "<td>#{saint_row["display_country"]}</td>"
+			        @html += "<td>#{saint_row["display_site"]}</td>"
+			        @html += "<td>#{saint_row["display_product"]}</td>"
+			        @html += "<td>#{saint_row["display_date"]}</td>"
+			        @html += "<td>#{saint_row["driver_id"]}</td>"
+			        @html += "</tr>"
+			      else
+			        @html += "<tr><td colspan=\"13\"><strong>#{saint_row["name"]}</strong></td></tr>"
+			      end
                 end
               else
                 failure = true
@@ -82,12 +107,12 @@ class ClassifierController < ApplicationController
           if failure == true
             @html += "<tr><th colspan=\"15\">*** FAILURE on page #{current_page}! ***</th></tr>"
           end
-        end while current_rows >= per_page
-        #end while current_page <= 2
+        #end while current_rows >= per_page
+        end while current_page < 1
       
         @html += "</table>"
       end
-    end
+    #end
   end
   
   def get_params(suite, els)

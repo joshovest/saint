@@ -58,6 +58,8 @@ class BrandMatchesController < ApplicationController
     end
     
     if @upload_file.save && @path
+      require 'csv'
+      
       count = 0
       deleted = false
       CSV.foreach(@path, :col_sep => ",") do |row|

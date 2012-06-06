@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120601194407) do
+ActiveRecord::Schema.define(:version => 20120606222700) do
 
   create_table "brand_matches", :force => true do |t|
     t.string   "match_list"
@@ -21,9 +21,27 @@ ActiveRecord::Schema.define(:version => 20120601194407) do
     t.integer  "position"
   end
 
+  create_table "classifications", :force => true do |t|
+    t.string   "key"
+    t.string   "name"
+    t.string   "type"
+    t.string   "keyword"
+    t.string   "branded"
+    t.string   "engine"
+    t.string   "country"
+    t.string   "tld"
+    t.string   "keyword_cloud"
+    t.string   "display_country"
+    t.string   "display_site"
+    t.string   "display_product"
+    t.string   "display_date"
+    t.string   "driver_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
   create_table "cloud_matches", :force => true do |t|
     t.string   "match_list"
-    t.boolean  "and_match"
     t.integer  "cloud_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -61,11 +79,11 @@ ActiveRecord::Schema.define(:version => 20120601194407) do
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "email"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.string   "password_digest"
     t.string   "remember_token"
-    t.boolean  "admin",           :default => false
+    t.boolean  "admin",           :default => true
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
