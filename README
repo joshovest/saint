@@ -1,0 +1,13 @@
+== Saint
+
+This is an Ruby on Rails application used by Salesforce.com to enhance our
+Omniture SiteCatalyst implementation. It uses the Omniture REST API to pull
+unclassified traffic source data, classify them based on a set of company-
+defined rules, and then push the classified data back into SiteCatalyst.
+
+Using this application allows the following:
+
+- Users can add new websites to be classified.
+- Users can add rules for how search keywords will be classified as branded
+  or non-branded, and for which Salesforce product they are associated with.
+- The classification script can be run.
