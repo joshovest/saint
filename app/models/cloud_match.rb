@@ -7,14 +7,14 @@ class CloudMatch < ActiveRecord::Base
   validates :cloud_id, presence:true
   
   def prep_list_for_save
-    self.match_list = self.match_list.gsub("\n", ",").gsub("\r", "")
+    self.match_list = self.match_list.gsub("\n", ",").gsub("\r", "") if !self.match_list.nil?
   end
   
   def prep_list_for_form
-    match_list = self.match_list.gsub(",", "\r\n")
+    match_list = self.match_list.gsub(",", "\r\n") if !self.match_list.nil?
   end
   
   def prep_list_for_display
-    match_list = self.match_list.gsub(",", "<br>").html_safe
+    match_list = self.match_list.gsub(",", "<br>").html_safe if !self.match_list.nil?
   end
 end

@@ -68,13 +68,15 @@ class CloudMatchesController < ApplicationController
           match = CloudMatch.new
           match.match_list = row[0]
           match.cloud_id = Cloud.find_by_name(row[1]).nil? ? nil : Cloud.find_by_name(row[1]).id
-          match.position = CloudMatch.count
-          if match.valid? && !deleted
-            # start all over
-            CloudMatch.destroy_all
-            deleted = true
+          if match.valid?
+            if !deleted
+              # start all over
+              CloudMatch.destroy_all
+              deleted = true
+            end
+            match.position = CloudMatch.count + 1
+            match.save
           end
-          match.save
         end
         count += 1
       end

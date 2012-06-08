@@ -68,16 +68,20 @@ class BrandMatchesController < ApplicationController
           match = BrandMatch.new
           match.match_list = row[0]
           match.exclude_list = row[1]
-          match.position = BrandMatch.count
-          if match.valid? && !deleted
-            # start all over
-            BrandMatch.destroy_all
-            deleted = true
+          if match.valid?
+            if !deleted
+              # start all over
+              BrandMatch.destroy_all
+              deleted = true
+            end
+            match.position = BrandMatch.count + 1
+            match.save
           end
-          match.save
         end
         count += 1
       end
+      
+      #delete file
       
       flash[:success] = "Your file was uploaded successfully!"
       redirect_to brand_matches_path

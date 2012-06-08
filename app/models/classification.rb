@@ -64,26 +64,26 @@ class Classification < ActiveRecord::Base
       
       driver_name = ""
       if self.driver_id != default_62org()
-        driver_name = els[2] + "|" + els[0] if self.type == "External Websites"
-        driver_name = els[1] + "|" + els[2] + "|" + els[0] if (self.type == "Social Media" || self.type == "SFDC Network")
+        driver_name = "#{els[2]}|#{els[0]}" if self.type == "External Websites"
+        driver_name = "#{els[1]}|#{els[2]}|#{els[0]}" if (self.type == "Social Media" || self.type == "SFDC Network")
         if self.type == "SEO"
           self.type = "SEM"
-          self.engine = self.type + "|no search engine"
-          self.keyword = self.type + "|no search keyword"
-          self.branded = self.type + "|Non-Brand"
-          self.country = self.type + "|USA"
+          self.engine = "#{self.type}|no search engine"
+          self.keyword = "#{self.type}|no search keyword"
+          self.branded = "#{self.type}|Non-Brand"
+          self.country = "#{self.type}|USA"
           self.tld = self.engine
-          self.keyword_cloud = self.type + "|General"
-          driver_name = self.type + "|" + els[0]
+          self.keyword_cloud = "#{self.type}|General"
+          driver_name = "#{self.type}|#{els[0]}"
         else
-          driver_name = els[1] + "|" + els[0]
+          driver_name = "#{els[1]}|#{els[0]}"
         end
       elsif self.type == "External Websites"
         driver_name = els[1]
       elsif self.type == "Social Media" || self.type == "SFDC Network"
-        driver_name = self.type + "|" + els[1]
+        driver_name = "#{self.type}|#{els[1]}"
       elsif self.type == "SEO"
-        driver_name = els[0] + "|" + els[2]
+        driver_name = "#{els[0]}|#{els[2]}"
       end
       
       driver_name
@@ -107,20 +107,22 @@ class Classification < ActiveRecord::Base
       secure_flag = "no keyword (secure)"
       return_vals = ["Non-Brand", "Brand"]
       
-      return default_search() if self.keyword == ""
+      return default_search() if self.keyword == "" || self.keyword.nil?
       return (self.type + "|" + secure_flag) if self.keyword.include?(secure_flag)
       
+      kw = self.keyword.downcase
       is_match = true
       brand_matches = BrandMatch.find(:all, order: "position")
       brand_matches.each do |bm|
+        bm.match_list.downcase!
         matches = bm.match_list.split(",")
         is_match = true
         matches.each do |m|
-          if !self.keyword.include?(m)
+          if !(("#{self.keyword} ").include?("#{m} ") || (" #{self.keyword}").include?(" #{m}"))
             # not a match
             is_match = false
             break
-          elsif (m == matches.last) && self.keyword.include?(m)
+          elsif (m == matches.last) && (("#{self.keyword} ").include?("#{m} ") || (" #{self.keyword}").include?(" #{m}"))
             # check for an exclude list
             if !bm.exclude_list.nil?
               excludes = bm.exclude_list.split(",")
@@ -164,7 +166,7 @@ class Classification < ActiveRecord::Base
 	    search_country = search_country.slice(start, search_country.length - start).strip
 	  end
 	  
-	  search_country = self.type + "|" + search_country
+	  search_country = "#{self.type}|#{search_country}"
     end
     
     def get_tld(els)
@@ -176,15 +178,16 @@ class Classification < ActiveRecord::Base
       default_cloud = "General"
       return default_search() if self.keyword == ""
       
+      kw = self.keyword.downcase
       cloud = ""
       cloud_matches = CloudMatch.find(:all, order: "position")
       cloud_matches.each do |cm|
+        cm.match_list.downcase!
         matches = cm.match_list.split(",")
         matches.each do |m|
-          kw = " "
-          if !self.keyword.include?(m)
+          if !(("#{kw} ").include?("#{m} ") || (" #{kw}").include?(" #{m}"))
             break
-          elsif (m == matches.last) && self.keyword.include?(m)
+          elsif (m == matches.last) && (("#{kw} ").include?("#{m} ") || (" #{kw}").include?(" #{m}"))
             cloud = cm.cloud.name
           end
         end
@@ -196,22 +199,22 @@ class Classification < ActiveRecord::Base
     
     def get_display_country(els)
       return default_display() if self.type != "BAN"
-      self.type + "|" + els.length >= 3 ? els[2].upcase : "[NO COUNTRY SPECIFIED]"
+      self.type + "|" + (els.length >= 3 ? els[2].upcase : "[NO COUNTRY SPECIFIED]")
     end
     
     def get_display_site(els)
       return default_display() if self.type != "BAN"
-	  self.type + "|" + els.length >= 4 ? els[3].upcase : "[NO PUBLISHER SPECIFIED]"
+	  self.type + "|" + (els.length >= 4 ? els[3].upcase : "[NO PUBLISHER SPECIFIED]")
     end
     
     def get_display_product(els)
       return default_display() if self.type != "BAN"
-	  self.type + "|" + els.length >= 6 ? els[5].upcase : "[NO PRODUCT SPECIFIED]"
+	  self.type + "|" + (els.length >= 6 ? els[5].upcase : "[NO PRODUCT SPECIFIED]")
     end
     
     def get_display_date(els)
       return default_display() if self.type != "BAN"
-	  self.type + "|" + els.length >= 5 ? els[4].upcase : "[NO YEAR/QUARTER SPECIFIED]"
+	  self.type + "|" + (els.length >= 5 ? els[4].upcase : "[NO YEAR/QUARTER SPECIFIED]")
     end
     
     def get_driver_id(els)

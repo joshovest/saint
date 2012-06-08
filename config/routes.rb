@@ -20,8 +20,12 @@ Saint::Application.routes.draw do
       post 'sort'
     end
   end
-
-  resources :classifier, only: [:index]
+  
+  resources :classifications do
+    collection do
+      get 'run'
+    end
+  end
   
   resources :sites
 
