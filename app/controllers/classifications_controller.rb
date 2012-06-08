@@ -13,10 +13,9 @@ class ClassificationsController < ApplicationController
     )
     
     @html = ""
-    #sites = Site.find(:all)
-    s = Site.find_by_name("Salesforce.com")
-    
-    #sites.each do |s|
+    #s = Site.find_by_name("Salesforce.com")
+    sites = Site.find(:all)
+    sites.each do |s|
       suites = s.suite_list.split(",")
       none_rpt = @client.get_report "Report.QueueRanked", get_params(suites.first, [
         {
@@ -40,13 +39,13 @@ class ClassificationsController < ApplicationController
         @html += "<h2>Unclassified Rows for <em>#{s.name}</em></h2>"
 	    @html += "<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">"
       
-        #per_page = 5000
-        per_page = 10
+        #per_page = 10
+        per_page = 5000
         current_page = 0
         current_rows = 0
         saint_row = 0
         begin
-          failure = false
+          failed = false
           current_page += 1
           unclassified_rpt = @client.get_report "Report.QueueRanked", get_params(suites.first, [
             {
@@ -95,20 +94,20 @@ class ClassificationsController < ApplicationController
 			      end
                 end
               else
-                failure = true
+                failed = true
               end
             else
-              failure = true
+              failed = true
             end
           else
-            failure = true
+            failed = true
           end
         
-          if failure == true
+          if failed == true
             @html += "<tr><th colspan=\"15\">*** FAILURE on page #{current_page}! ***</th></tr>"
           end
-        #end while current_rows >= per_page
-        end while current_page < 1
+        end while current_rows >= per_page
+        #end while current_page < 1
       
         @html += "</table>"
       end
@@ -153,7 +152,7 @@ class ClassificationsController < ApplicationController
 		      }
 		      
 		      if !commit_response.nil? && commit_response.to_s.downcase != "failed"
-		        @html += "Your SAINT job (#{@saint_table.count}) has been queued for #{variable["name"]} - job ID #{create_response} for #{suites.first}<br><br>"
+		        @html += "Your SAINT job (#{@saint_table.count}) has been queued for #{variable["name"]} - job ID #{create_response} for #{suites.first}<br>"
 		      else
 		        failed = true
 		      end
@@ -167,7 +166,7 @@ class ClassificationsController < ApplicationController
 		  @html += "Sorry, your SAINT job could not be submitted.<br><br>" if failed
 		end
       end
-    #end
+    end
   end
   
   def get_params(suite, els)
