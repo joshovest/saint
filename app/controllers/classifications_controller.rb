@@ -13,7 +13,7 @@ class ClassificationsController < ApplicationController
     )
     
     @html = ""
-    #s = Site.find_by_name("Salesforce.com")
+    #s = Site.find_by_name("Chatter.com")
     sites = Site.find(:all)
     sites.each do |s|
       suites = s.suite_list.split(",")
@@ -34,13 +34,13 @@ class ClassificationsController < ApplicationController
         end
       end
       
-      @saint_table = Array.new
+      saint_table = Array.new
       if none_row > 0
         @html += "<h2>Unclassified Rows for <em>#{s.name}</em></h2>"
 	    @html += "<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">"
       
         #per_page = 10
-        per_page = 5000
+        per_page = 1000
         current_page = 0
         current_rows = 0
         saint_row = 0
@@ -64,17 +64,20 @@ class ClassificationsController < ApplicationController
           if !unclassified_rpt["report"].nil?
             if !unclassified_rpt["report"]["data"].nil?
               if !unclassified_rpt["report"]["data"][0]["breakdown"].nil?
-                @html += "<tr><th colspan=\"13\">New Report - page #{current_page}</th></tr>"
+                @html += "<tr><th colspan=\"14\">New Report - page #{current_page}</th></tr>"
               
                 current_rows = unclassified_rpt["report"]["data"][0]["breakdown"].length
+                table_rows = 0
                 unclassified_rpt["report"]["data"][0]["breakdown"].each do |row|
 			      row["name"] = row["name"].gsub("%/", "/")
 			      row["name"] = HTMLEntities.new.decode row["name"]
 			      
 			      saint_row = Classification.new({key: row["name"]})
-			      @saint_table << {row: saint_row.get_row}
+			      saint_table << {row: saint_row.get_row}
 			      if saint_row.valid?
+			        table_rows += 1
 			        @html += "<tr>"
+			        @html += "<td>#{table_rows}</td>"
 			        @html += "<td>#{saint_row["key"]}</td>"
 			        @html += "<td>#{saint_row["type"]}</td>"
 			        @html += "<td>#{saint_row["engine"]}</td>"
@@ -112,7 +115,7 @@ class ClassificationsController < ApplicationController
         @html += "</table>"
       end
       
-      if @saint_table.count > 0
+      if saint_table.count > 0
 		relations = [
 		  {
 		    "name" => "Traffic Driver Last",
@@ -143,7 +146,7 @@ class ClassificationsController < ApplicationController
 		    populate_response = @client.make_request "Saint.ImportPopulateJob", {
 		      "job_id" => create_response,
 		      "page" => "1",
-		      "rows" => @saint_table
+		      "rows" => saint_table
 		    }
 		    
 		    if !populate_response.nil? && populate_response.to_s.downcase != "failed"
@@ -152,7 +155,7 @@ class ClassificationsController < ApplicationController
 		      }
 		      
 		      if !commit_response.nil? && commit_response.to_s.downcase != "failed"
-		        @html += "Your SAINT job (#{@saint_table.count}) has been queued for #{variable["name"]} - job ID #{create_response} for #{suites.first}<br>"
+		        @html += "Your SAINT job (#{saint_table.count} rows) has been queued for #{variable["name"]} - job ID #{create_response} for #{s.name}<br>"
 		      else
 		        failed = true
 		      end
