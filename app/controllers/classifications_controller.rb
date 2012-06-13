@@ -36,8 +36,8 @@ class ClassificationsController < ApplicationController
       
       saint_table = Array.new
       if none_row > 0
-        @html += "<h2>Unclassified Rows for <em>#{s.name}</em></h2>"
-	    @html += "<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">"
+        @html += "<h2>Unclassified Rows for <em>#{s.name}</em></h2>\n"
+	    @html += "<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">\n"
       
         #per_page = 10
         per_page = 1000
@@ -64,10 +64,9 @@ class ClassificationsController < ApplicationController
           if !unclassified_rpt["report"].nil?
             if !unclassified_rpt["report"]["data"].nil?
               if !unclassified_rpt["report"]["data"][0]["breakdown"].nil?
-                @html += "<tr><th colspan=\"14\">New Report - page #{current_page}</th></tr>"
+                @html += "<tr><th colspan=\"14\">New Report - page #{current_page}</th></tr>\n"
               
                 current_rows = unclassified_rpt["report"]["data"][0]["breakdown"].length
-                table_rows = 0
                 unclassified_rpt["report"]["data"][0]["breakdown"].each do |row|
 			      row["name"] = row["name"].gsub("%/", "/")
 			      row["name"] = HTMLEntities.new.decode row["name"]
@@ -76,24 +75,24 @@ class ClassificationsController < ApplicationController
 			      saint_table << {row: saint_row.get_row}
 			      if saint_row.valid?
 			        table_rows += 1
-			        @html += "<tr>"
-			        @html += "<td>#{table_rows}</td>"
-			        @html += "<td>#{saint_row["key"]}</td>"
-			        @html += "<td>#{saint_row["type"]}</td>"
-			        @html += "<td>#{saint_row["engine"]}</td>"
-			        @html += "<td>#{saint_row["tld"]}</td>"
-			        @html += "<td>#{saint_row["name"]}</td>"
-			        @html += "<td>#{saint_row["country"]}</td>"
-			        @html += "<td>#{saint_row["branded"]}</td>"
-			        @html += "<td>#{saint_row["keyword_cloud"]}</td>"
-			        @html += "<td>#{saint_row["display_country"]}</td>"
-			        @html += "<td>#{saint_row["display_site"]}</td>"
-			        @html += "<td>#{saint_row["display_product"]}</td>"
-			        @html += "<td>#{saint_row["display_date"]}</td>"
-			        @html += "<td>#{saint_row["driver_id"]}</td>"
-			        @html += "</tr>"
+			        @html += "<tr>\n"
+			        @html += "<td>#{saint_table.count}</td>\n"
+			        @html += "<td>#{saint_row["key"]}</td>\n"
+			        @html += "<td>#{saint_row["type"]}</td>\n"
+			        @html += "<td>#{saint_row["engine"]}</td>\n"
+			        @html += "<td>#{saint_row["tld"]}</td>\n"
+			        @html += "<td>#{saint_row["name"]}</td>\n"
+			        @html += "<td>#{saint_row["country"]}</td>\n"
+			        @html += "<td>#{saint_row["branded"]}</td>\n"
+			        @html += "<td>#{saint_row["keyword_cloud"]}</td>\n"
+			        @html += "<td>#{saint_row["display_country"]}</td>\n"
+			        @html += "<td>#{saint_row["display_site"]}</td>\n"
+			        @html += "<td>#{saint_row["display_product"]}</td>\n"
+			        @html += "<td>#{saint_row["display_date"]}</td>\n"
+			        @html += "<td>#{saint_row["driver_id"]}</td>\n"
+			        @html += "</tr>\n"
 			      else
-			        @html += "<tr><td colspan=\"13\"><strong>#{saint_row["name"]}</strong></td></tr>"
+			        @html += "<tr><td colspan=\"13\"><strong>#{saint_row["name"]}</strong></td></tr>\n"
 			      end
                 end
               else
@@ -107,12 +106,12 @@ class ClassificationsController < ApplicationController
           end
         
           if failed == true
-            @html += "<tr><th colspan=\"15\">*** FAILURE on page #{current_page}! ***</th></tr>"
+            @html += "<tr><th colspan=\"15\">*** FAILURE on page #{current_page}! ***</th></tr>\n"
           end
         end while current_rows >= per_page
         #end while current_page < 1
       
-        @html += "</table>"
+        @html += "</table>\n"
       end
       
       if saint_table.count > 0
@@ -155,7 +154,7 @@ class ClassificationsController < ApplicationController
 		      }
 		      
 		      if !commit_response.nil? && commit_response.to_s.downcase != "failed"
-		        @html += "Your SAINT job (#{saint_table.count} rows) has been queued for #{variable["name"]} - job ID #{create_response} for #{s.name}<br>"
+		        @html += "Your SAINT job (#{saint_table.count} rows) has been queued for #{variable["name"]} - job ID #{create_response} for #{s.name}<br/>\n"
 		      else
 		        failed = true
 		      end
@@ -166,7 +165,7 @@ class ClassificationsController < ApplicationController
 		    failed = true
 		  end
 		  
-		  @html += "Sorry, your SAINT job could not be submitted.<br><br>" if failed
+		  @html += "Sorry, your SAINT job could not be submitted.<br/><br/>\n" if failed
 		end
       end
     end
