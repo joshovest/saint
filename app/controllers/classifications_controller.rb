@@ -1,4 +1,7 @@
 class ClassificationsController < ApplicationController
+  def index
+  end
+  
   def run
     require 'htmlentities'
     
@@ -154,7 +157,7 @@ class ClassificationsController < ApplicationController
 		      }
 		      
 		      if !commit_response.nil? && commit_response.to_s.downcase != "failed"
-		        @html += "Your SAINT job (#{saint_table.count} rows) has been queued for #{variable["name"]} - job ID #{create_response} for #{s.name}<br/>\n"
+		        @html += "<p>Your SAINT job (#{saint_table.count} rows) has been queued for #{variable["name"]} - job ID #{create_response} for #{s.name}</p>\n"
 		      else
 		        failed = true
 		      end
@@ -165,7 +168,7 @@ class ClassificationsController < ApplicationController
 		    failed = true
 		  end
 		  
-		  @html += "Sorry, your SAINT job could not be submitted.<br/><br/>\n" if failed
+		  @html += "<p>Sorry, your SAINT job could not be submitted.</p>\n" if failed
 		end
       end
     end

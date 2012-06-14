@@ -25,11 +25,11 @@ class Classification < ActiveRecord::Base
     end
   end
   
-  def get_row
-    row = [self.key, self.type, self.engine, self.tld, self.name, self.country, self.branded, self.keyword_cloud, self.display_country, self.display_site, self.display_product, self.display_date, self.driver_id]
-  end
-  
   public
+    def get_row
+      row = [self.key, self.type, self.engine, self.tld, self.name, self.country, self.branded, self.keyword_cloud, self.display_country, self.display_site, self.display_product, self.display_date, self.driver_id]
+    end
+  
     def default_search
       "[NON-SEARCH TRAFFIC DRIVER]"
 	end

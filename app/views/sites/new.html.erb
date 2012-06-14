@@ -1,12 +1,4 @@
 <%= provide(:title, 'Add new site') %>
 <h1>Add new site</h1>
 
-<p>To add a new site to be classified, you will also need to do the following:</p>
-<ol>
-	<li>Using the Omniture Admin Console, make sure that your new report suite(s) to be classified have the same classifications on both the Campaign and Traffic Driver variables as the New All Rollup suite.</li>
-	<li>Upload <a href="/templates/drivers_first.txt">this file</a> to all new report suites to classify the "None" row for the Campaign variable.</li>
-	<li>Upload <a href="/templates/drivers_last.txt">this file</a> to all new report suites to classify the "None" row for the Traffic Driver variable.</li>
-</ol>
-<br/>
-
 <%= render 'form', lbl:'Add site' %>
