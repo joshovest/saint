@@ -77,7 +77,6 @@ class ClassificationsController < ApplicationController
 			      saint_row = Classification.new({key: row["name"]})
 			      saint_table << {row: saint_row.get_row}
 			      if saint_row.valid?
-			        table_rows += 1
 			        @html += "<tr>\n"
 			        @html += "<td>#{saint_table.count}</td>\n"
 			        @html += "<td>#{saint_row["key"]}</td>\n"

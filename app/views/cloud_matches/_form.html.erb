@@ -5,7 +5,7 @@
 
 			<div class="field">
 				<%= f.label :cloud_id %>
-			    <%= f.select :cloud_id, options_from_collection_for_select(Cloud.find(:all, order:"name"), "id", "name"), prompt:"Please choose one" %>
+			    <%= f.select :cloud_id, Cloud.order(:name).collect {|c| [ c.name, c.id ] }, {:include_blank => "Please choose one"} %>
 			</div>
 			<div class="field">
 				<%= f.label 'Match list (put each on a new line)' %>
