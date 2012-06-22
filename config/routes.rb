@@ -24,6 +24,7 @@ Saint::Application.routes.draw do
   resources :classifications do
     collection do
       get 'run'
+      get 'queue'
     end
   end
   

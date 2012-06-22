@@ -11,6 +11,12 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum:6 }
   validates :password_confirmation, presence:true
   
+  def run_classifications
+    require 'omni'
+    o = Omni.new
+    html = o.classify(self)
+  end
+  
   private
   
     def create_remember_token

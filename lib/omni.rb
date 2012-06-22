@@ -1,22 +1,8 @@
-class ClassificationsController < ApplicationController
-  def index
+class Omni
+  def initialize
   end
   
-  def queue
-    require 'omni'
-    
-    @html = "" 
-    flash[:success] = "Your job was queued. You will receive an email when your request is completed and the SAINT rows have been submitted to Omniture."
-    @current_user.delay.run_classifications
-  end
-  
-  def run
-    require 'omni'
-    
-    @html = @current_user.run_classifications
-  end
-    
-  def run_now
+  def classify(user)
     require 'htmlentities'
     
     # create client w/ credentials
@@ -29,8 +15,10 @@ class ClassificationsController < ApplicationController
       wait_time:25
     )
     
+    Rails.logger.debug "Start classifying..."
+    @msg = ""
     @html = ""
-    #s = Site.find_by_name("Chatter.com")
+    #s = Site.find_by_name("Force.com")
     sites = Site.find(:all)
     sites.each do |s|
       suites = s.suite_list.split(",")
@@ -55,7 +43,7 @@ class ClassificationsController < ApplicationController
       if none_row > 0
         @html += "<h2>Unclassified Rows for <em>#{s.name}</em></h2>\n"
 	    @html += "<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">\n"
-      
+	    
         #per_page = 10
         per_page = 1000
         current_page = 0
@@ -82,7 +70,7 @@ class ClassificationsController < ApplicationController
             if !unclassified_rpt["report"]["data"].nil?
               if !unclassified_rpt["report"]["data"][0]["breakdown"].nil?
                 @html += "<tr><th colspan=\"14\">New Report - page #{current_page}</th></tr>\n"
-              
+                
                 current_rows = unclassified_rpt["report"]["data"][0]["breakdown"].length
                 unclassified_rpt["report"]["data"][0]["breakdown"].each do |row|
 			      row["name"] = row["name"].gsub("%/", "/")
@@ -90,6 +78,7 @@ class ClassificationsController < ApplicationController
 			      
 			      saint_row = Classification.new({key: row["name"]})
 			      saint_table << {row: saint_row.get_row}
+			      
 			      if saint_row.valid?
 			        @html += "<tr>\n"
 			        @html += "<td>#{saint_table.count}</td>\n"
@@ -120,13 +109,13 @@ class ClassificationsController < ApplicationController
           else
             failed = true
           end
-        
+          
           if failed == true
             @html += "<tr><th colspan=\"15\">*** FAILURE on page #{current_page}! ***</th></tr>\n"
           end
         end while current_rows >= per_page
         #end while current_page < 1
-      
+        
         @html += "</table>\n"
       end
       
@@ -170,7 +159,9 @@ class ClassificationsController < ApplicationController
 		      }
 		      
 		      if !commit_response.nil? && commit_response.to_s.downcase != "failed"
-		        @html += "<p>Your SAINT job (#{saint_table.count} rows) has been queued for #{variable["name"]} - job ID #{create_response} for #{s.name}</p>\n"
+		        job_id = create_response.gsub("\"", "")
+		        @msg += "- Site: #{s.name} / Variable: #{variable["name"]} / Rows: #{saint_table.count} / Job ID: #{job_id}\r\n"
+		        @html += "<p>Site: #{s.name} / Variable: #{variable["name"]} / Rows: #{saint_table.count} / Job ID: #{job_id}</p>\n"
 		      else
 		        failed = true
 		      end
@@ -181,9 +172,35 @@ class ClassificationsController < ApplicationController
 		    failed = true
 		  end
 		  
-		  @html += "<p>Sorry, your SAINT job could not be submitted.</p>\n" if failed
+		  if failed
+		    @msg += "- Site: #{s.name} / Variable: #{variable["name"]} / Rows: 0 (due to error)\r\n"
+		    @html += "<p>Site: #{s.name} / Variable: #{variable["name"]} / Rows: 0 (due to error)</p>\n"
+		  end
 		end
       end
     end
+    
+    # send notification email
+    Rails.logger.debug @msg
+    SaintMailer.delay.job_email(@msg, user)
+    
+    @html
+  end
+  
+  def get_params(suite, els)
+    t_start = Time.new
+    t_end = t_start - (60*60*24*30)
+    params = {
+      "reportDescription" => {
+        "reportSuiteID" => suite,
+        "dateFrom" => t_start.strftime("%Y-%m-%d"),
+        "dateTo" => t_end.strftime("%Y-%m-%d"),
+        "metrics" => [
+          {"id" => "event11"}
+        ],
+        "elements" => els
+      }
+    }
+    params
   end
 end

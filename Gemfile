@@ -8,6 +8,7 @@ gem 'bootstrap-will_paginate', '0.0.6'
 gem 'acts_as_list'
 gem 'romniture'
 gem 'htmlentities'
+gem 'delayed_job_active_record'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -44,6 +45,7 @@ gem 'jquery-rails'
 group :development, :test do
   gem 'sqlite3', '1.3.5'
   gem 'rspec-rails', '2.10.0'
+  gem 'foreman'
 end
 
 group :test do
