@@ -176,7 +176,7 @@ class Classification < ActiveRecord::Base
     
     def get_keyword_cloud
       default_cloud = "General"
-      return default_search() if self.keyword == ""
+      return default_search() if (self.keyword == "" || self.keyword.nil?)
       
       kw = self.keyword.downcase
       cloud = ""
