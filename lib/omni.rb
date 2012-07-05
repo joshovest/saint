@@ -17,10 +17,9 @@ class Omni
       wait_time:25
     )
     
-    Rails.logger.debug "Start classifying..."
     @msg = ""
     @html = ""
-    
+    failed = false
     user = User.first
     suites = site.suite_list.split(",")
     none_rpt = @client.get_report "Report.QueueRanked", get_params(suites.first, [
@@ -182,7 +181,7 @@ class Omni
     
     # send notification email
     Rails.logger.debug @msg
-    SaintMailer.job_email(@msg, user).deliver
+    SaintMailer.job_email(@msg, user, failed).deliver
     
     @html
   end
@@ -206,6 +205,7 @@ class Omni
     Rails.logger.debug "Start classifying..."
     @msg = ""
     @html = ""
+    failed = false
     #s = Site.find_by_name("Force.com")
     sites = Site.find(:all)
     sites.each do |s|
@@ -370,7 +370,7 @@ class Omni
     
     # send notification email
     Rails.logger.debug @msg
-    SaintMailer.delay.job_email(@msg, user)
+    SaintMailer.delay.job_email(@msg, user, failed)
     
     @html
   end

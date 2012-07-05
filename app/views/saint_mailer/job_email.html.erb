@@ -8,7 +8,8 @@
 		</style>
 	</head>
 	<body>
-		<h1>Status email for queued SAINT jobs:</h1>
+		<h1><%= @headline %></h1>
+		<br/><br/>
 		<ul>
 			<%= @msg.gsub("- ", "<li>").gsub("\r\n", "</li>").html_safe %>
 		</ul>
