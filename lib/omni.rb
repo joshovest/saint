@@ -182,7 +182,7 @@ class Omni
     
     # send notification email
     Rails.logger.debug @msg
-    SaintMailer.delay.job_email(@msg, user)
+    SaintMailer.job_email(@msg, user).deliver
     
     @html
   end
