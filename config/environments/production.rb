@@ -55,8 +55,8 @@ Saint::Application.configure do
   # Configuration for using SendGrid on Heroku
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
-    :user_name => "adcoqqhk",
-    :password => "app4759519@heroku.com",
+    :user_name => "app4759519@heroku.com",
+    :password => "adcoqqhk",
     :domain => "salesforcewebanalytics.herokuapp.com",
     :address => "smtp.sendgrid.net",
     :port => 587,
