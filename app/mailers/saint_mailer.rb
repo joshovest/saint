@@ -1,5 +1,5 @@
 class SaintMailer < ActionMailer::Base
-  default from: "josh.west@salesforce.com"
+  default from: "no-reply@salesforcewebanalytics.herokuapp.com"
  
   def job_email(msg, user)
     @msg = msg
