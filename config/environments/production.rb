@@ -52,6 +52,17 @@ Saint::Application.configure do
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
+  # Configuration for using SendGrid on Heroku
+  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.smtp_settings = {
+    :user_name => "adcoqqhk",
+    :password => "app4759519@heroku.com",
+    :domain => "salesforcewebanalytics.herokuapp.com",
+    :address => "smtp.sendgrid.net",
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 
   # Enable threaded mode
   # config.threadsafe!
