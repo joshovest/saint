@@ -1,5 +1,8 @@
 class ClassificationsController < ApplicationController
   def index
+    @msg = "Test email"
+    u = User.first
+    SaintMailer.job_email(@msg, u).deliver
   end
   
   def queue
