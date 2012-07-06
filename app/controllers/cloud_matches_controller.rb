@@ -40,8 +40,6 @@ class CloudMatchesController < ApplicationController
     @cloud_match = CloudMatch.find(params[:id])
     @cloud_match.destroy
     
-    CloudMatch.find(params[:id]).destroy
-    
     flash[:success] = 'Match has been successfully deleted.'
     redirect_to cloud_matches_path
   end

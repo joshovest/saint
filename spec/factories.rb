@@ -27,4 +27,10 @@ FactoryGirl.define do
     sequence(:match_list)	{ |n| "match#{n},exclude#{n}" }
     sequence(:position)		{ |n| n }
   end
+  
+  factory :cloud_match do
+    sequence(:match_list)	{ |n| "match#{n},exclude#{n}" }
+    sequence(:position)		{ |n| n }
+    sequence(:cloud_id)		{ |n| Cloud.first.id }
+  end
 end

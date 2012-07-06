@@ -18,14 +18,23 @@ describe "Cloud pages" do
 
       describe "as an admin user" do
         let(:admin) { FactoryGirl.create(:admin) }
+        let(:match) { FactoryGirl.create(:cloud_match) }
         before do
           sign_in admin
           visit clouds_path
         end
 
         it { should have_link('delete', href: cloud_path(Cloud.first)) }
-        it "should be able to delete cloud" do
-          expect { click_link('delete') }.to change(Cloud, :count).by(-1)
+        describe "should be able to delete cloud and child matches" do
+          let(:match_count) { Cloud.count }
+          let(:cloud_id) { Cloud.first.id }
+          
+          before do
+            click_link("delete")
+          end
+          
+          specify { Cloud.count == match_count - 1 }
+          specify { CloudMatch.find_by_cloud_id(cloud_id) == nil }
         end
       end
     end
