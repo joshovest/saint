@@ -40,8 +40,6 @@ class BrandMatchesController < ApplicationController
   def destroy
     BrandMatch.find(params[:id]).destroy
 
-    Site.find(params[:id]).destroy
-    
     flash[:success] = 'Match has been successfully deleted.'
     redirect_to brand_matches_path
   end

@@ -1,8 +1,6 @@
 class SitesController < ApplicationController
   def index
     @sites = Site.paginate(page: params[:page])
-    
-    @c = Classification.new({key: "SEO|Google|salesforce"})
   end
   
   def new
@@ -37,7 +35,8 @@ class SitesController < ApplicationController
   end
 
   def destroy
-    Site.find(params[:id]).destroy
+    @site = Site.find(params[:id])
+    @site.destroy
     
     flash[:success] = 'Site (' + @site.name + ') has been successfully deleted.'
     redirect_to sites_path

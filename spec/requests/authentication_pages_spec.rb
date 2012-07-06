@@ -67,6 +67,25 @@ describe "Authentication" do
           it { should have_selector('title', text: 'Sign in') }
         end
       end
+      
+      describe "in the Sites controller" do
+        let(:site) { FactoryGirl.create(:site) }
+        
+        describe "visiting the edit page" do
+          before { visit edit_site_path(site) }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+
+        describe "submitting to the update action" do
+          before { put site_path(site) }
+          specify { response.should redirect_to(signin_path) }
+        end
+        
+        describe "visiting the site index" do
+          before { visit sites_path }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+      end
     end
   end
 end
