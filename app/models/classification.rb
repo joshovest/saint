@@ -64,8 +64,6 @@ class Classification < ActiveRecord::Base
       
       driver_name = ""
       if self.driver_id != default_62org()
-        driver_name = "#{els[2]}|#{els[0]}" if self.type == "External Websites"
-        driver_name = "#{els[1]}|#{els[2]}|#{els[0]}" if (self.type == "Social Media" || self.type == "SFDC Network")
         if self.type == "SEO"
           self.type = "SEM"
           self.engine = "#{self.type}|no search engine"
@@ -75,6 +73,10 @@ class Classification < ActiveRecord::Base
           self.tld = self.engine
           self.keyword_cloud = "#{self.type}|General"
           driver_name = "#{self.type}|#{els[0]}"
+        elsif self.type == "External Websites"
+          driver_name = "#{els[2]}|#{els[0]}" 
+        elsif (self.type == "Social Media" || self.type == "SFDC Network")
+          driver_name = "#{els[1]}|#{els[2]}|#{els[0]}" 
         else
           driver_name = "#{els[1]}|#{els[0]}"
         end
@@ -118,16 +120,16 @@ class Classification < ActiveRecord::Base
         matches = bm.match_list.split(",")
         is_match = true
         matches.each do |m|
-          if !(("#{self.keyword} ").include?("#{m} ") || (" #{self.keyword}").include?(" #{m}"))
+          if !(("#{kw} ").include?("#{m} ") || (" #{kw}").include?(" #{m}"))
             # not a match
             is_match = false
             break
-          elsif (m == matches.last) && (("#{self.keyword} ").include?("#{m} ") || (" #{self.keyword}").include?(" #{m}"))
+          elsif (m == matches.last) && (("#{kw} ").include?("#{m} ") || (" #{kw}").include?(" #{m}"))
             # check for an exclude list
             if !bm.exclude_list.nil?
               excludes = bm.exclude_list.split(",")
               excludes.each do |e|
-                if self.keyword.include?(e)
+                if ("#{kw} ").include?("#{e} ") || (" #{kw}").include?(" #{e}")
                   is_match = false
                   break
                 end
