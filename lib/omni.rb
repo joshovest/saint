@@ -54,13 +54,16 @@ class Omni
         current_page += 1
         unclassified_rpt = @client.get_report "Report.QueueRanked", get_params(suites.first, [
           {
-            "id" => "eVar27",
-            "classification" => "Traffic Driver Type",
+            #"id" => "eVar27",
+            #"classification" => "Traffic Driver Type",
+            "id" => "campaign",
+            "classification" => "Traffic Driver Original-Type",
             "top" => 1,
             "startingWith" => none_row
           },
           {
-            "id" => "eVar27",
+            #"id" => "eVar27",
+            "id" => "campaign",
             "top" => per_page,
             "startingWith" => current_page == 1 ? current_page : ((current_page * per_page) + 1)
           }
