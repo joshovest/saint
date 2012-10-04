@@ -6,7 +6,7 @@ gem 'bcrypt-ruby', '3.0.1'
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.6'
 gem 'acts_as_list'
-gem 'romniture'
+gem 'romniture', :git => 'git://github.com/joshovest/romniture.git'
 gem 'htmlentities'
 gem 'delayed_job_active_record'
 

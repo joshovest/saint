@@ -6,7 +6,7 @@ Saint::Application.initialize!
 
 Saint::Application.configure do
   config.omni_username	= 'jwest:Salesforce'
-  config.omni_secret	= 'd1c4e1ab8a79f1c9699d2f187c1d731a'
+  config.omni_secret	= '226abdf79ac59c15faad318b33a68063'
 end
 
 # Configuration for using SendGrid on Heroku

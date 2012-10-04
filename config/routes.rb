@@ -36,6 +36,12 @@ Saint::Application.routes.draw do
   
   resources :sessions, only: [:new, :create, :destroy]
   
+  resources :key_metrics do
+    collection do
+      get 'load'
+    end
+  end
+  
   root :to => 'classifications#index'
 
   # The priority is based upon order of creation:

@@ -19,6 +19,7 @@ class ClassificationsController < ApplicationController
     
     @html = ""
     sites = Site.all
+    s = Site.first
     sites.each do |s|
       @html += s.run_classifications
     end
