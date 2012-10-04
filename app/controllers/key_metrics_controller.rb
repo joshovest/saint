@@ -1,35 +1,23 @@
 class KeyMetricsController < ApplicationController
   def index
+    @key_metrics = KeyMetric.all
   end
   
   def load
     require 'omni'
     
-    @client = ROmniture::Client.new(
-      Saint::Application.config.omni_username,
-      Saint::Application.config.omni_secret,
-      :dallas,
-      verify_mode:nil,
-      log:false,
-      wait_time:25
-    )
-    
-    t_end = Time.new
+    suite_id = "salesforcemarketing"
+    t_end = Time.new - (60*60*24)
     t_start = t_end - (60*60*24*60)
+    metrics = [
+    	{"id" => "visits"},
+    	{"id" => "event17"}
+    ]
+    segment = "dsc:280:228:c221f926-19c8-4430-b9b0-56d6095bd6b4"
+    granularity = "day"
     
-    @rpt = @client.make_request "Report.GetOvertimeReport", {
-      "reportDescription" => {
-        "reportSuiteID" => "salesforcemarketing",
-        "dateFrom" => t_start.strftime("%Y-%m-%d"),
-        "dateTo" => t_end.strftime("%Y-%m-%d"),
-        "dateGranularity" => "day",
-        "metrics" => [
-          {"id" => "visits"},
-          {"id" => "event17"}
-        ],
-        "segment_id" => "dsc:280:228:c221f926-19c8-4430-b9b0-56d6095bd6b4"
-      }
-    }
-    
+    o = Omni.new
+    o.delay.load_new(suite_id, metrics, segment, t_start, t_end, granularity)
+    redirect_to key_metrics_path
   end
 end

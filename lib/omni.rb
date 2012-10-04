@@ -1,12 +1,7 @@
 class Omni
-  def initialize
-  end
+  attr_accessor :client
   
-  def classify(site)
-    return if site.nil?
-    
-    require 'htmlentities'
-    
+  def initialize
     # create client w/ credentials
     @client = ROmniture::Client.new(
       Saint::Application.config.omni_username,
@@ -16,6 +11,41 @@ class Omni
       log:false,
       wait_time:25
     )
+  end
+  
+  def load_new(suite_id, metrics, segment, t_start, t_end, granularity)
+    Rails.logger.debug "we started"
+    rpt = @client.request "Report.GetOvertimeReport", {
+      "reportDescription" => {
+        "reportSuiteID" => suite_id,
+        "dateFrom" => t_start.strftime("%Y-%m-%d"),
+        "dateTo" => t_end.strftime("%Y-%m-%d"),
+        "dateGranularity" => granularity,
+        "metrics" => metrics,
+        "segment_id" => segment || ""
+      }
+    }
+    Rails.logger.debug "made it here"
+    if !rpt["report"].nil?
+      if !rpt["report"]["data"].nil?
+        KeyMetric.destroy_all
+        rpt["report"]["data"].each do |row|
+          k = KeyMetric.new
+          k.date = Date.new(row['year'], row['month'], row['day'])
+          k.visits = row['counts'][0]
+          k.form_completes = row['counts'][1]
+          k.save
+        end
+        
+        Rails.logger.debug "we finished"
+      end
+    end
+  end
+  
+  def classify(site)
+    return if site.nil?
+    
+    require 'htmlentities'
     
     @msg = ""
     @html = ""

@@ -3,8 +3,6 @@ class ClassificationsController < ApplicationController
   end
   
   def queue
-    require 'omni'
-    
     @html = "" 
     flash[:success] = "Your job was queued. You will receive an email when your request is completed and the SAINT rows have been submitted to Omniture."
     
@@ -15,8 +13,6 @@ class ClassificationsController < ApplicationController
   end
   
   def run
-    require 'omni'
-    
     @html = ""
     sites = Site.all
     s = Site.first
