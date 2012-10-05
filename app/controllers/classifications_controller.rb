@@ -20,8 +20,4 @@ class ClassificationsController < ApplicationController
       end
     end
   end
-  
-  def init
-  
-  end
 end

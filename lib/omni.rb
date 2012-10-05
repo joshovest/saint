@@ -49,7 +49,7 @@ class Omni
     failed = false
     user = User.first
     suites = site.suite_list.split(",")
-    none_rpt = @client.request "Report.QueueRanked", get_params(suites.first, [
+    none_rpt = @client.get_report "Report.QueueRanked", get_params(suites.first, [
       {
         #"id" => "eVar27",
        	#"classification" => "Traffic Driver Type",
@@ -81,7 +81,7 @@ class Omni
       begin
         failed = false
         current_page += 1
-        unclassified_rpt = @client.request "Report.QueueRanked", get_params(suites.first, [
+        unclassified_rpt = @client.get_report "Report.QueueRanked", get_params(suites.first, [
           {
             #"id" => "eVar27",
             #"classification" => "Traffic Driver Type",
