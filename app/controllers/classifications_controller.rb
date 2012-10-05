@@ -2,22 +2,26 @@ class ClassificationsController < ApplicationController
   def index
   end
   
-  def queue
-    @html = "" 
-    flash[:success] = "Your job was queued. You will receive an email when your request is completed and the SAINT rows have been submitted to Omniture."
+  def run
+    @html = ""
     
-    sites = Site.all
+    if !params[:id].nil?
+      sites = Site.find_all_by_id(params[:id])
+    else
+      sites = Site.all
+    end
+    
     sites.each do |s|
-      s.delay.run_classifications
+      if Rails.env.production?
+        flash[:success] = "Your job was queued. You will receive an email when your request is completed and the SAINT rows have been submitted to Omniture."
+        s.delay.run_classifications
+      else
+        @html += s.run_classifications  
+      end
     end
   end
   
-  def run
-    @html = ""
-    sites = Site.all
-    s = Site.first
-    sites.each do |s|
-      @html += s.run_classifications
-    end
+  def init
+  
   end
 end

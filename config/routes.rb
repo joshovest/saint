@@ -1,7 +1,8 @@
 Saint::Application.routes.draw do
 
-  match '/signin',	to: 'sessions#new'
-  match '/signout',	to: 'sessions#destroy', via: :delete
+  match '/signin',		to: 'sessions#new'
+  match '/signout',		to: 'sessions#destroy', via: :delete
+  match '/dashboard',	to: 'key_metrics#index'
 
   resources :cloud_matches do
     collection do
@@ -24,7 +25,9 @@ Saint::Application.routes.draw do
   resources :classifications do
     collection do
       get 'run'
-      get 'queue'
+    end
+    member do
+      get 'run'
     end
   end
   
@@ -38,7 +41,8 @@ Saint::Application.routes.draw do
   
   resources :key_metrics do
     collection do
-      get 'load'
+      get 'visits'
+      get 'form_completes'
     end
   end
   

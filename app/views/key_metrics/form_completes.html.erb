@@ -1,0 +1,39 @@
+<%= provide(:title, 'Form Completes') %>
+<h1>Form Completes</h1>
+
+<div class="button-nav">
+	<%= link_to "Back to dashboard home", key_metrics_path, class: "btn btn-large btn-primary" %>
+</div>
+
+<%  count = 0
+    max = 30
+    @key_metrics.each do |km|
+      if count % max == 0
+        if count != 0 %>
+	</table>
+</div>
+<%      end %>
+<div style="width: 50%; float: left;">
+<%      if count == 0 %>
+	<h3>Last 30 days</h3>
+<%      else %>
+	<h3>30 Days Prior</h3>
+<%      end %>
+	<table class="data" cellpadding="0" cellspacing="0" border="0">
+		<tr>
+			<th>Date</th>
+			<th>Form Completes</th>
+		</tr>
+<%    end
+      count += 1 %>
+		<tr>
+			<td><%= km.date.strftime("%-m/%-d/%Y") %></td>
+			<td><%= km.form_completes %></td>
+		</tr>
+<%  end %>
+	</table>
+</div>
+
+<div class="button-nav">
+	<%= link_to "Back to dashboard home", key_metrics_path, class: "btn btn-large btn-primary" %>
+</div>

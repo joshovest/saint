@@ -14,8 +14,7 @@ class Omni
   end
   
   def load_new(suite_id, metrics, segment, t_start, t_end, granularity)
-    Rails.logger.debug "we started"
-    rpt = @client.request "Report.GetOvertimeReport", {
+    rpt = @client.get_report "Report.QueueOvertime", {
       "reportDescription" => {
         "reportSuiteID" => suite_id,
         "dateFrom" => t_start.strftime("%Y-%m-%d"),
@@ -25,7 +24,7 @@ class Omni
         "segment_id" => segment || ""
       }
     }
-    Rails.logger.debug "made it here"
+    
     if !rpt["report"].nil?
       if !rpt["report"]["data"].nil?
         KeyMetric.destroy_all
@@ -36,8 +35,6 @@ class Omni
           k.form_completes = row['counts'][1]
           k.save
         end
-        
-        Rails.logger.debug "we finished"
       end
     end
   end
@@ -52,7 +49,7 @@ class Omni
     failed = false
     user = User.first
     suites = site.suite_list.split(",")
-    none_rpt = @client.request "Report.GetRankedReport", get_params(suites.first, [
+    none_rpt = @client.request "Report.QueueRanked", get_params(suites.first, [
       {
         #"id" => "eVar27",
        	#"classification" => "Traffic Driver Type",
@@ -84,7 +81,7 @@ class Omni
       begin
         failed = false
         current_page += 1
-        unclassified_rpt = @client.request "Report.GetRankedReport", get_params(suites.first, [
+        unclassified_rpt = @client.request "Report.QueueRanked", get_params(suites.first, [
           {
             #"id" => "eVar27",
             #"classification" => "Traffic Driver Type",

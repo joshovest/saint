@@ -1,5 +1,16 @@
 class KeyMetricsController < ApplicationController
   def index
+  end
+  
+  def visits
+    load if KeyMetric.all.length == 0
+    
+    @key_metrics = KeyMetric.all
+  end
+  
+  def form_completes
+    load if KeyMetric.all.length == 0
+    
     @key_metrics = KeyMetric.all
   end
   
@@ -7,8 +18,8 @@ class KeyMetricsController < ApplicationController
     require 'omni'
     
     suite_id = "salesforcemarketing"
-    t_end = Time.new - (60*60*24)
-    t_start = t_end - (60*60*24*60)
+    t_end = Time.new - (60*60*24*2)
+    t_start = t_end - (60*60*24*59)
     metrics = [
     	{"id" => "visits"},
     	{"id" => "event17"}
@@ -17,7 +28,10 @@ class KeyMetricsController < ApplicationController
     granularity = "day"
     
     o = Omni.new
-    o.delay.load_new(suite_id, metrics, segment, t_start, t_end, granularity)
-    redirect_to key_metrics_path
+    if Rails.env.production?
+      o.delay.load_new(suite_id, metrics, segment, t_start, t_end, granularity)
+    else
+      o.load_new(suite_id, metrics, segment, t_start, t_end, granularity)
+    end
   end
 end
