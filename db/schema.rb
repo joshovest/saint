@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121003184612) do
+ActiveRecord::Schema.define(:version => 20121005211225) do
 
   create_table "brand_matches", :force => true do |t|
     t.string   "match_list"
@@ -56,6 +56,22 @@ ActiveRecord::Schema.define(:version => 20121003184612) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "dashboard_driver_types", :force => true do |t|
+    t.string   "type"
+    t.integer  "visits"
+    t.integer  "form_completes"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  create_table "dashboard_trended_metrics", :force => true do |t|
+    t.date     "date"
+    t.integer  "visits"
+    t.integer  "form_completes"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
@@ -71,14 +87,6 @@ ActiveRecord::Schema.define(:version => 20121003184612) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
-
-  create_table "key_metrics", :force => true do |t|
-    t.date     "date"
-    t.integer  "visits"
-    t.integer  "form_completes"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-  end
 
   create_table "sites", :force => true do |t|
     t.string   "name"

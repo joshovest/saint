@@ -13,7 +13,7 @@ class Omni
     )
   end
   
-  def load_new(suite_id, metrics, segment, t_start, t_end, granularity)
+  def load_trended_metrics(suite_id, metrics, segment, t_start, t_end, granularity)
     rpt = @client.get_report "Report.QueueOvertime", {
       "reportDescription" => {
         "reportSuiteID" => suite_id,
@@ -27,17 +27,45 @@ class Omni
     
     if !rpt["report"].nil?
       if !rpt["report"]["data"].nil?
-        KeyMetric.destroy_all
+        DashboardTrendedMetric.destroy_all
         rpt["report"]["data"].each do |row|
-          k = KeyMetric.new
-          k.date = Date.new(row['year'], row['month'], row['day'])
-          k.visits = row['counts'][0]
-          k.form_completes = row['counts'][1]
-          k.save
+          m = DashboardTrendedMetric.new
+          m.date = Date.new(row['year'], row['month'], row['day'])
+          m.visits = row['counts'][0]
+          m.form_completes = row['counts'][1]
+          m.save
         end
       end
     end
   end
+  
+  #def load_driver_types(suite_id, metrics, segment, elements, t_start, t_end, granularity)
+  #  rpt = @client.get_report "Report.QueueRanked", {
+  #    "reportDescription" => {
+  #      "reportSuiteID" => suite_id,
+  #      "dateFrom" => t_start.strftime("%Y-%m-%d"),
+  #      "dateTo" => t_end.strftime("%Y-%m-%d"),
+  #      "dateGranularity" => granularity,
+  #      "metrics" => metrics,
+  #      "segment_id" => segment || ""
+  #    }
+  #  }
+    
+  #  if !rpt["report"].nil?
+  #    if !rpt["report"]["data"].nil?
+  #      DashboardDriverType.destroy_all
+  #      rpt["report"]["data"].each do |row|
+  #        if row["name"] != "::unspecified::"
+  #          m = DashboardDriverType.new
+  #          m.type = row["name"]
+  #          m.visits = row['counts'][0]
+  #          m.form_completes = row['counts'][1]
+  #          m.save
+  #        end
+  #      end
+  #    end
+  #  end
+  #end
   
   def classify(site)
     return if site.nil?
@@ -51,10 +79,10 @@ class Omni
     suites = site.suite_list.split(",")
     none_rpt = @client.get_report "Report.QueueRanked", get_params(suites.first, [
       {
-        #"id" => "eVar27",
-       	#"classification" => "Traffic Driver Type",
-       	"id" => "trackingCode",
-       	"classification" => "Traffic Driver Original-Type",
+        "id" => "eVar27",
+       	"classification" => "Traffic Driver Type",
+       	#"id" => "trackingCode",
+       	#"classification" => "Traffic Driver Original-Type",
        	"top" => 20
       }
     ])
@@ -83,16 +111,16 @@ class Omni
         current_page += 1
         unclassified_rpt = @client.get_report "Report.QueueRanked", get_params(suites.first, [
           {
-            #"id" => "eVar27",
-            #"classification" => "Traffic Driver Type",
-            "id" => "trackingCode",
-            "classification" => "Traffic Driver Original-Type",
+            "id" => "eVar27",
+            "classification" => "Traffic Driver Type",
+            #"id" => "trackingCode",
+            #"classification" => "Traffic Driver Original-Type",
             "top" => 1,
             "startingWith" => none_row
           },
           {
-            #"id" => "eVar27",
-            "id" => "trackingCode",
+            "id" => "eVar27",
+            #"id" => "trackingCode",
             "top" => per_page,
             "startingWith" => current_page == 1 ? current_page : ((current_page * per_page) + 1)
           }

@@ -2,7 +2,7 @@ Saint::Application.routes.draw do
 
   match '/signin',		to: 'sessions#new'
   match '/signout',		to: 'sessions#destroy', via: :delete
-  match '/dashboard',	to: 'key_metrics#index'
+  match '/dashboard',	to: 'dashboard_trended_metrics#index'
 
   resources :cloud_matches do
     collection do
@@ -39,7 +39,7 @@ Saint::Application.routes.draw do
   
   resources :sessions, only: [:new, :create, :destroy]
   
-  resources :key_metrics do
+  resources :dashboard_trended_metrics do
     collection do
       get 'visits'
       get 'form_completes'
