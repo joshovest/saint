@@ -29,43 +29,137 @@ class Omni
       if !rpt["report"]["data"].nil?
         DashboardTrendedMetric.destroy_all
         rpt["report"]["data"].each do |row|
-          m = DashboardTrendedMetric.new
-          m.date = Date.new(row['year'], row['month'], row['day'])
-          m.visits = row['counts'][0]
-          m.form_completes = row['counts'][1]
-          m.save
+          r = DashboardTrendedMetric.new
+          r.date = Date.new(row["year"], row["month"], row["day"])
+          r.visits = row["counts"][0]
+          r.form_completes = row["counts"][1]
+          r.save
         end
       end
     end
   end
   
-  #def load_driver_types(suite_id, metrics, segment, elements, t_start, t_end, granularity)
-  #  rpt = @client.get_report "Report.QueueRanked", {
-  #    "reportDescription" => {
-  #      "reportSuiteID" => suite_id,
-  #      "dateFrom" => t_start.strftime("%Y-%m-%d"),
-  #      "dateTo" => t_end.strftime("%Y-%m-%d"),
-  #      "dateGranularity" => granularity,
-  #      "metrics" => metrics,
-  #      "segment_id" => segment || ""
-  #    }
-  #  }
+  def load_driver_types(suite_id, metrics, segment, elements, t_start, t_end, empty_table)
+    rpt = @client.get_report "Report.QueueRanked", {
+      "reportDescription" => {
+        "reportSuiteID" => suite_id,
+        "dateFrom" => t_start.strftime("%Y-%m-%d"),
+        "dateTo" => t_end.strftime("%Y-%m-%d"),
+        "metrics" => metrics,
+        "elements" => elements,
+        "segment_id" => segment || ""
+      }
+    }
     
-  #  if !rpt["report"].nil?
-  #    if !rpt["report"]["data"].nil?
-  #      DashboardDriverType.destroy_all
-  #      rpt["report"]["data"].each do |row|
-  #        if row["name"] != "::unspecified::"
-  #          m = DashboardDriverType.new
-  #          m.type = row["name"]
-  #          m.visits = row['counts'][0]
-  #          m.form_completes = row['counts'][1]
-  #          m.save
-  #        end
-  #      end
-  #    end
-  #  end
-  #end
+    if !rpt["report"].nil?
+      if !rpt["report"]["data"].nil?
+        DashboardDriverType.destroy_all if empty_table
+        rpt["report"]["data"].each do |row|
+          if row["name"] != "::unspecified::"
+            if metrics[0]["id"] == "visits"
+              r = DashboardDriverType.new
+              r.driver_type = row["name"]
+              r.start_date = t_start
+              r.visits = row["counts"][0]
+              r.form_completes = 0
+            else
+              r = DashboardDriverType.find_by_driver_type(row["name"], :conditions => { :start_date => (t_start-1)..(t_start+1) })
+              r.form_completes = row["counts"][0] if !r.nil?
+            end
+            
+            r.save if !r.nil?
+          end
+        end
+      end
+    end
+  end
+  
+  def load_clouds(suite_id, metrics, segment, elements, t_start, t_end, empty_table)
+    rpt = @client.get_report "Report.QueueRanked", {
+      "reportDescription" => {
+        "reportSuiteID" => suite_id,
+        "dateFrom" => t_start.strftime("%Y-%m-%d"),
+        "dateTo" => t_end.strftime("%Y-%m-%d"),
+        "metrics" => metrics,
+        "elements" => elements,
+        "segment_id" => segment || ""
+      }
+    }
+    
+    if !rpt["report"].nil?
+      if !rpt["report"]["data"].nil?
+        DashboardCloud.destroy_all if empty_table
+        rpt["report"]["data"].each do |row|
+          if row["name"] != "::unspecified::" && row["name"] != "No Cloud"
+            r = DashboardCloud.new
+            r.name = row["name"]
+            r.start_date = t_start
+            r.page_views = row["counts"][0]
+            r.form_completes = row["counts"][1]
+            r.save
+          end
+        end
+      end
+    end
+  end
+  
+  def load_videos(suite_id, metrics, segment, elements, t_start, t_end, empty_table)
+    rpt = @client.get_report "Report.QueueRanked", {
+      "reportDescription" => {
+        "reportSuiteID" => suite_id,
+        "dateFrom" => t_start.strftime("%Y-%m-%d"),
+        "dateTo" => t_end.strftime("%Y-%m-%d"),
+        "metrics" => metrics,
+        "elements" => elements,
+        "segment_id" => segment || ""
+      }
+    }
+    
+    if !rpt["report"].nil?
+      if !rpt["report"]["data"].nil?
+        DashboardVideoName.destroy_all if empty_table
+        rpt["report"]["data"].each do |row|
+          if row["name"] != "::unspecified::" && row["name"] != "No Cloud"
+            r = DashboardVideoName.new
+            r.name = row["name"]
+            r.start_date = t_start
+            r.video_starts = row["counts"][0]
+            r.video_completes = row["counts"][1]
+            r.save
+          end
+        end
+      end
+    end
+  end
+  
+  def load_offer_types(suite_id, metrics, segment, elements, t_start, t_end, empty_table)
+    rpt = @client.get_report "Report.QueueRanked", {
+      "reportDescription" => {
+        "reportSuiteID" => suite_id,
+        "dateFrom" => t_start.strftime("%Y-%m-%d"),
+        "dateTo" => t_end.strftime("%Y-%m-%d"),
+        "metrics" => metrics,
+        "elements" => elements,
+        "segment_id" => segment || ""
+      }
+    }
+    
+    if !rpt["report"].nil?
+      if !rpt["report"]["data"].nil?
+        DashboardOfferType.destroy_all if empty_table
+        rpt["report"]["data"].each do |row|
+          if row["name"] != "::unspecified::" && row["name"] != "[NO OFFER ID]"
+            r = DashboardOfferType.new
+            r.name = row["name"]
+            r.start_date = t_start
+            r.form_views = row["counts"][0]
+            r.form_completes = row["counts"][1]
+            r.save
+          end
+        end
+      end
+    end
+  end
   
   def classify(site)
     return if site.nil?

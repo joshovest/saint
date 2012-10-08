@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121005211225) do
+ActiveRecord::Schema.define(:version => 20121008220530) do
 
   create_table "brand_matches", :force => true do |t|
     t.string   "match_list"
@@ -56,12 +56,32 @@ ActiveRecord::Schema.define(:version => 20121005211225) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "dashboard_driver_types", :force => true do |t|
-    t.string   "type"
-    t.integer  "visits"
+  create_table "dashboard_clouds", :force => true do |t|
+    t.string   "name"
+    t.date     "start_date"
+    t.integer  "page_views"
     t.integer  "form_completes"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "dashboard_driver_types", :force => true do |t|
+    t.string   "driver_type"
+    t.integer  "visits"
+    t.integer  "form_completes"
+    t.date     "start_date"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  create_table "dashboard_offer_types", :force => true do |t|
+    t.string   "name"
+    t.date     "start_date"
+    t.integer  "form_views"
+    t.integer  "form_completes"
+    t.decimal  "form_complete_rate"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "dashboard_trended_metrics", :force => true do |t|
@@ -70,6 +90,15 @@ ActiveRecord::Schema.define(:version => 20121005211225) do
     t.integer  "form_completes"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "dashboard_video_names", :force => true do |t|
+    t.string   "name"
+    t.integer  "video_starts"
+    t.integer  "video_completes"
+    t.date     "start_date"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "delayed_jobs", :force => true do |t|

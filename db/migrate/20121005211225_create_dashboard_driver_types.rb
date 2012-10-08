@@ -1,11 +1,10 @@
 class CreateDashboardDriverTypes < ActiveRecord::Migration
   def change
     create_table :dashboard_driver_types do |t|
-      t.string :type
-      t.integer :visits_30
-      t.integer :form_completes_30
-      #t.integer :visits_60
-      #t.integer :form_completes_60
+      t.string :driver_type
+      t.integer :visits
+      t.integer :form_completes
+      t.date :start_date
 
       t.timestamps
     end

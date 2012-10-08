@@ -5,30 +5,28 @@
 	<%= link_to "Back to dashboard home", dashboard_trended_metrics_path, class: "btn btn-large btn-primary" %>
 </div>
 
-<%  count = 0
-    max = 30
-    @dashboard_trended_metrics.each do |km|
-      if count % max == 0
-        if count != 0 %>
-	</table>
+<%  date = nil
+    @dashboard_offer_types.each do |dt|
+      if date != dt.start_date
+        if !date.nil?
+          table_hdr = "30 Days Prior" %>
+    </table>
 </div>
-<%      end %>
+<%      else
+          table_hdr = "Last 30 Days"
+        end
+        date = dt.start_date %>
 <div style="width: 50%; float: left;">
-<%      if count == 0 %>
-	<h3>30 Days Prior</h3>
-<%      else %>
-	<h3>Last 30 days</h3>
-<%      end %>
+	<h3><%= table_hdr %> (<%= date.strftime("%-m/%-d/%Y") %> - <%= (dt.start_date + 29).strftime("%-m/%-d/%Y") %>)</h3>
 	<table class="data" cellpadding="0" cellspacing="0" border="0">
 		<tr>
-			<th>Date</th>
+			<th>Offer Type</th>
 			<th>Form Completes</th>
 		</tr>
-<%    end
-      count += 1 %>
+<%    end %>
 		<tr>
-			<td><%= km.date.strftime("%-m/%-d/%Y") %></td>
-			<td><%= km.form_completes %></td>
+			<td><%= dt.name %></td>
+			<td><%= dt.form_completes %></td>
 		</tr>
 <%  end %>
 	</table>

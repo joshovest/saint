@@ -1,29 +1,20 @@
 class DashboardDriverTypesController < ApplicationController
-  def index
-  end
-  
   def visits
-    load if DashboardTrendedMetric.all.length == 0
+    load if DashboardDriverType.all.length == 0
     
-    @dashboard_trended_metrics = DashboardTrendedMetric.all
+    @dashboard_driver_types = DashboardDriverType.find(:all, :order => "start_date DESC, visits DESC")
   end
   
   def form_completes
-    load if DashboardTrendedMetric.all.length == 0
+    load if DashboardDriverType.all.length == 0
     
-    @dashboard_trended_metrics = DashboardTrendedMetric.all
+    @dashboard_driver_types = DashboardDriverType.find(:all, :order => "start_date DESC, form_completes DESC")
   end
   
   def load
     require 'omni'
     
     suite_id = "salesforcemarketing"
-    t_end = Time.new - (60*60*24*2)
-    t_start = t_end - (60*60*24*59)
-    metrics = [
-    	{"id" => "visits"},
-    	{"id" => "event17"}
-    ]
     elements = [
       {
         "id" => "eVar27",
@@ -31,13 +22,30 @@ class DashboardDriverTypesController < ApplicationController
         "top" => "10"
       }
     ]
+    t_end = [
+      Time.new.to_date - 2,
+      Time.new.to_date - 32
+    ]
+    metric_list = [
+      "visits",
+      "event17"
+    ]
     segment = "dsc:280:228:c221f926-19c8-4430-b9b0-56d6095bd6b4"
     
     o = Omni.new
-    if Rails.env.production?
-      o.delay.load_driver_types(suite_id, metrics, segment, elements, t_start, t_end, granularity)
-    else
-      o.load_driver_types(suite_id, metrics, segment, elements, t_start, t_end, granularity)
+    count = 0
+    t_end.each do |t|
+      metric_list.each do |m|
+        metrics = [
+          {"id" => m}
+        ]
+        if Rails.env.production?
+          o.delay.load_driver_types(suite_id, metrics, segment, elements, t - 30, t, count == 0)
+        else
+          o.load_driver_types(suite_id, metrics, segment, elements, t - 30, t, count == 0)
+        end
+        count += 1
+      end
     end
   end
 end

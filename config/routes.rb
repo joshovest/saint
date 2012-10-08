@@ -46,6 +46,35 @@ Saint::Application.routes.draw do
     end
   end
   
+  resources :dashboard_driver_types do
+    collection do
+      get 'visits'
+      get 'form_completes'
+    end
+  end
+  
+  resources :dashboard_clouds do
+    collection do
+      get 'page_views'
+      get 'form_completes'
+    end
+  end
+  
+  resources :dashboard_offer_types do
+    collection do
+      get 'form_views'
+      get 'form_completes'
+      get 'form_complete_rate'
+    end
+  end
+  
+  resources :dashboard_video_names do
+    collection do
+      get 'video_starts'
+      get 'video_completes'
+    end
+  end
+  
   root :to => 'classifications#index'
 
   # The priority is based upon order of creation:
