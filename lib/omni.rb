@@ -8,7 +8,7 @@ class Omni
       Saint::Application.config.omni_secret,
       :dallas,
       verify_mode:nil,
-      log:false,
+      #log:false,
       wait_time:25
     )
   end
