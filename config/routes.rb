@@ -53,6 +53,12 @@ Saint::Application.routes.draw do
     end
   end
   
+  resources :dashboard_browsers do
+    collection do
+      get 'visits'
+    end
+  end
+  
   resources :dashboard_clouds do
     collection do
       get 'page_views'

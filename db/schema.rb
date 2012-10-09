@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121008220530) do
+ActiveRecord::Schema.define(:version => 20121009171211) do
 
   create_table "brand_matches", :force => true do |t|
     t.string   "match_list"
@@ -54,6 +54,15 @@ ActiveRecord::Schema.define(:version => 20121008220530) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "dashboard_browsers", :force => true do |t|
+    t.string   "name"
+    t.integer  "visits"
+    t.integer  "form_completes"
+    t.date     "start_date"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "dashboard_clouds", :force => true do |t|

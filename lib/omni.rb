@@ -132,7 +132,7 @@ class Omni
     end
   end
   
-  def load_offer_types(suite_id, metrics, segment, elements, t_start, t_end, empty_table)
+  def load_videos(suite_id, metrics, segment, elements, t_start, t_end, empty_table)
     rpt = @client.get_report "Report.QueueRanked", {
       "reportDescription" => {
         "reportSuiteID" => suite_id,
@@ -146,15 +146,45 @@ class Omni
     
     if !rpt["report"].nil?
       if !rpt["report"]["data"].nil?
-        DashboardOfferType.destroy_all if empty_table
+        DashboardVideoName.destroy_all if empty_table
         rpt["report"]["data"].each do |row|
-          if row["name"] != "::unspecified::" && row["name"] != "[NO OFFER ID]"
-            r = DashboardOfferType.new
+          if row["name"] != "::unspecified::" && row["name"] != "No Cloud"
+            r = DashboardVideoName.new
             r.name = row["name"]
             r.start_date = t_start
-            r.form_views = row["counts"][0]
-            r.form_completes = row["counts"][1]
+            r.video_starts = row["counts"][0]
+            r.video_completes = row["counts"][1]
             r.save
+          end
+        end
+      end
+    end
+  end
+  
+  def load_browsers(suite_id, metrics, segment, elements, t_start, t_end, empty_table)
+    for i in 0..(metrics.length - 1)
+      rpt = @client.get_report "Report.QueueRanked", {
+        "reportDescription" => {
+          "reportSuiteID" => suite_id,
+          "dateFrom" => t_start.strftime("%Y-%m-%d"),
+          "dateTo" => t_end.strftime("%Y-%m-%d"),
+          "metrics" => metrics[i],
+          "elements" => elements[i],
+          "segment_id" => segment || ""
+        }
+      }
+    
+      if !rpt["report"].nil?
+        if !rpt["report"]["data"].nil?
+          DashboardBrowser.destroy_all if (empty_table && i==0)
+          rpt["report"]["data"].each do |row|
+            if row["name"] != "::unspecified::"
+              r = DashboardBrowser.new
+              r.name = row["name"]
+              r.start_date = t_start
+              r.visits = row["counts"][0]
+              r.save
+            end
           end
         end
       end
