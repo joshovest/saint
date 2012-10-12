@@ -119,7 +119,7 @@ class Omni
       if !rpt["report"]["data"].nil?
         DashboardVideoName.destroy_all if empty_table
         rpt["report"]["data"].each do |row|
-          if row["name"] != "::unspecified::" && row["name"] != "No Cloud"
+          if row["name"] != "::unspecified::"
             r = DashboardVideoName.new
             r.name = row["name"]
             r.start_date = t_start
@@ -132,7 +132,7 @@ class Omni
     end
   end
   
-  def load_videos(suite_id, metrics, segment, elements, t_start, t_end, empty_table)
+  def load_offer_types(suite_id, metrics, segment, elements, t_start, t_end, empty_table)
     rpt = @client.get_report "Report.QueueRanked", {
       "reportDescription" => {
         "reportSuiteID" => suite_id,
@@ -146,14 +146,14 @@ class Omni
     
     if !rpt["report"].nil?
       if !rpt["report"]["data"].nil?
-        DashboardVideoName.destroy_all if empty_table
+        DashboardOfferType.destroy_all if empty_table
         rpt["report"]["data"].each do |row|
-          if row["name"] != "::unspecified::" && row["name"] != "No Cloud"
-            r = DashboardVideoName.new
+          if row["name"] != "::unspecified::" && row["name"] != "[NO OFFER ID]"
+            r = DashboardOfferType.new
             r.name = row["name"]
             r.start_date = t_start
-            r.video_starts = row["counts"][0]
-            r.video_completes = row["counts"][1]
+            r.form_views = row["counts"][0]
+            r.form_completes = row["counts"][1]
             r.save
           end
         end

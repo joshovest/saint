@@ -1,14 +1,26 @@
 class DashboardVideoNamesController < ApplicationController
   def video_starts
-    load if DashboardVideoName.all.length == 0
+    load if !is_current_data?
     
     @dashboard_video_names = DashboardVideoName.find(:all, :order => "start_date DESC, video_starts DESC")
   end
   
   def video_completes
-    load if DashboardVideoName.all.length == 0
+    load if !is_current_data?
     
     @dashboard_video_names = DashboardVideoName.find(:all, :order => "start_date DESC, video_completes DESC")
+  end
+  
+  def is_current_data?
+    if DashboardVideoName.all.length == 0
+      cur = false
+    elsif (DashboardVideoName.maximum(:start_date)+30) < 2.days.ago.to_date
+      cur = false
+    else
+      cur = true
+    end
+    
+    cur
   end
   
   def load

@@ -1,8 +1,21 @@
 class DashboardBrowsersController < ApplicationController
   def visits
-    load if DashboardBrowser.all.length == 0
+    load if !is_current_data?
     
     @dashboard_browsers = DashboardBrowser.find(:all, :order => "start_date DESC, visits DESC")
+  end
+  
+  def is_current_data?
+    d = 2.days.ago
+    if DashboardBrowser.all.length == 0
+      cur = false
+    elsif (DashboardBrowser.maximum(:start_date)+30) < 2.days.ago.to_date
+      cur = false
+    else
+      cur = true
+    end
+    
+    cur
   end
   
   def load

@@ -1,20 +1,32 @@
 class DashboardOfferTypesController < ApplicationController
   def form_views
-    load if DashboardOfferType.all.length == 0
+    load if !is_current_data?
     
     @dashboard_offer_types = DashboardOfferType.find(:all, :order => "start_date DESC, form_views DESC")
   end
   
   def form_completes
-    load if DashboardOfferType.all.length == 0
+    load if !is_current_data?
     
     @dashboard_offer_types = DashboardOfferType.find(:all, :order => "start_date DESC, form_completes DESC")
   end
   
   def form_complete_rate
-    load if DashboardOfferType.all.length == 0
+    load if !is_current_data?
     
     @dashboard_offer_types = DashboardOfferType.find(:all, :order => "start_date DESC")
+  end
+  
+  def is_current_data?
+    if DashboardOfferType.all.length == 0
+      cur = false
+    elsif (DashboardOfferType.maximum(:start_date)+30) < 2.days.ago.to_date
+      cur = false
+    else
+      cur = true
+    end
+    
+    cur
   end
   
   def load

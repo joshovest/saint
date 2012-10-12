@@ -1,14 +1,26 @@
 class DashboardCloudsController < ApplicationController
   def page_views
-    load if DashboardCloud.all.length == 0
+    load if !is_current_data?
     
     @dashboard_clouds = DashboardCloud.find(:all, :order => "start_date DESC, page_views DESC")
   end
   
   def form_completes
-    load if DashboardCloud.all.length == 0
+    load if !is_current_data?
     
     @dashboard_clouds = DashboardCloud.find(:all, :order => "start_date DESC, page_views DESC")
+  end
+  
+  def is_current_data?
+    if DashboardCloud.all.length == 0
+      cur = false
+    elsif (DashboardCloud.maximum(:start_date)+30) < 2.days.ago.to_date
+      cur = false
+    else
+      cur = true
+    end
+    
+    cur
   end
   
   def load

@@ -1,14 +1,26 @@
 class DashboardDriverTypesController < ApplicationController
   def visits
-    load if DashboardDriverType.all.length == 0
+    load if !is_current_data?
     
     @dashboard_driver_types = DashboardDriverType.find(:all, :order => "start_date DESC, visits DESC")
   end
   
   def form_completes
-    load if DashboardDriverType.all.length == 0
+    load if !is_current_data?
     
     @dashboard_driver_types = DashboardDriverType.find(:all, :order => "start_date DESC, form_completes DESC")
+  end
+  
+  def is_current_data?
+    if DashboardDriverType.all.length == 0
+      cur = false
+    elsif (DashboardDriverType.maximum(:start_date)+30) < 2.days.ago.to_date
+      cur = false
+    else
+      cur = true
+    end
+    
+    cur
   end
   
   def load

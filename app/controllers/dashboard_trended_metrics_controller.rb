@@ -1,17 +1,26 @@
 class DashboardTrendedMetricsController < ApplicationController
-  def index
-  end
-  
   def visits
-    load if DashboardTrendedMetric.all.length == 0
+    load if !is_current_data?
     
     @dashboard_trended_metrics = DashboardTrendedMetric.find(:all, :order => "date DESC")
   end
   
   def form_completes
-    load if DashboardTrendedMetric.all.length == 0
+    load if !is_current_data?
     
     @dashboard_trended_metrics = DashboardTrendedMetric.find(:all, :order => "date DESC")
+  end
+  
+  def is_current_data?
+    if DashboardTrendedMetric.all.length == 0
+      cur = false
+    elsif DashboardTrendedMetric.maximum(:date) < 2.days.ago.to_date
+      cur = false
+    else
+      cur = true
+    end
+    
+    cur
   end
   
   def load
