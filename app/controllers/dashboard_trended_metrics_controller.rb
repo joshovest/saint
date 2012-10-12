@@ -38,7 +38,6 @@ class DashboardTrendedMetricsController < ApplicationController
     
     o = Omni.new
     if Rails.env.production?
-      flash[:success] = "Data has been re-requested."
       o.delay.load_trended_metrics(suite_id, metrics, segment, t_start, t_end, granularity)
     else
       o.load_trended_metrics(suite_id, metrics, segment, t_start, t_end, granularity)
