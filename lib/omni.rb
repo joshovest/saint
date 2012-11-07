@@ -257,6 +257,7 @@ class Omni
               
               current_rows = unclassified_rpt["report"]["data"][0]["breakdown"].length
               unclassified_rpt["report"]["data"][0]["breakdown"].each do |row|
+                row["name"] = "" if row["name"].nil?
                 row["name"] = row["name"].gsub("%/", "/")
                 row["name"] = HTMLEntities.new.decode row["name"]
                 
