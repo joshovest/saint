@@ -49,6 +49,7 @@ class Classification < ActiveRecord::Base
   
     def get_type(els)
       return self.type if !self.type.nil?
+      return "" if els[0].nil?
       type = ""
       
 	  els[0] = "External Websites" if (els[0] == "Link" || els[0].include?("External Website"))
