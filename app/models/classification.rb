@@ -108,10 +108,12 @@ class Classification < ActiveRecord::Base
 	
     def get_branded
       secure_flag = "no keyword (secure)"
+      no_keyword_flag = "no keyword"
       return_vals = ["Non-Brand", "Brand"]
       
       return default_search() if self.keyword == "" || self.keyword.nil?
       return (self.type + "|" + secure_flag) if self.keyword.include?(secure_flag)
+      return (self.type + "|" + no_keyword_flag) if self.keyword.include?(no_keyword_flag)
       
       kw = self.keyword.downcase
       is_match = true
