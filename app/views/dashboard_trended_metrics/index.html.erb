@@ -2,7 +2,7 @@
 <h1>Dashboard links</h1>
 
 <ul>
-	<li><%= link_to "Visits", visits_dashboard_trended_metrics_path %></li>
+	<li><%= link_to "Visits", visits_dashboard_trended_metrics_path %>&nbsp;|&nbsp;<%= link_to "JSON", "/dashboard_trended_metrics/visits.json" %></li>
 	<li><%= link_to "Form Completes", form_completes_dashboard_trended_metrics_path %></li>
 	<li><%= link_to "Visits by Browser/Device", visits_dashboard_browsers_path %></li>
 	<li><%= link_to "Traffic Driver Types (Visits)", visits_dashboard_driver_types_path %></li>
