@@ -16,6 +16,13 @@ class DashboardTrendedMetricsController < ApplicationController
     load if !is_current_data?
     
     @dashboard_trended_metrics = DashboardTrendedMetric.find(:all, :order => "date DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_trended_metrics
+      }
+    end
   end
   
   def is_current_data?

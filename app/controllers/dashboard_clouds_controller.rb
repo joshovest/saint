@@ -3,12 +3,26 @@ class DashboardCloudsController < ApplicationController
     load if !is_current_data?
     
     @dashboard_clouds = DashboardCloud.find(:all, :order => "start_date DESC, page_views DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_clouds
+      }
+    end
   end
   
   def form_completes
     load if !is_current_data?
     
     @dashboard_clouds = DashboardCloud.find(:all, :order => "start_date DESC, page_views DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_clouds
+      }
+    end
   end
   
   def is_current_data?

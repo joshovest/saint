@@ -3,12 +3,26 @@ class DashboardVideoNamesController < ApplicationController
     load if !is_current_data?
     
     @dashboard_video_names = DashboardVideoName.find(:all, :order => "start_date DESC, video_starts DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_video_names
+      }
+    end
   end
   
   def video_completes
     load if !is_current_data?
     
     @dashboard_video_names = DashboardVideoName.find(:all, :order => "start_date DESC, video_completes DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_video_names
+      }
+    end
   end
   
   def is_current_data?

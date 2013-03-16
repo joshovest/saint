@@ -3,18 +3,39 @@ class DashboardOfferTypesController < ApplicationController
     load if !is_current_data?
     
     @dashboard_offer_types = DashboardOfferType.find(:all, :order => "start_date DESC, form_views DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_offer_types
+      }
+    end
   end
   
   def form_completes
     load if !is_current_data?
     
     @dashboard_offer_types = DashboardOfferType.find(:all, :order => "start_date DESC, form_completes DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_offer_types
+      }
+    end
   end
   
   def form_complete_rate
     load if !is_current_data?
     
     @dashboard_offer_types = DashboardOfferType.find(:all, :order => "start_date DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_offer_types
+      }
+    end
   end
   
   def is_current_data?

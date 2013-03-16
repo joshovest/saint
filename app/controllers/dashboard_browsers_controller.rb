@@ -3,6 +3,13 @@ class DashboardBrowsersController < ApplicationController
     load if !is_current_data?
     
     @dashboard_browsers = DashboardBrowser.find(:all, :order => "start_date DESC, visits DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_browsers
+      }
+    end
   end
   
   def is_current_data?

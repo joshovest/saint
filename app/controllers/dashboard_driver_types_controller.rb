@@ -3,12 +3,26 @@ class DashboardDriverTypesController < ApplicationController
     load if !is_current_data?
     
     @dashboard_driver_types = DashboardDriverType.find(:all, :order => "start_date DESC, visits DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_driver_types
+      }
+    end
   end
   
   def form_completes
     load if !is_current_data?
     
     @dashboard_driver_types = DashboardDriverType.find(:all, :order => "start_date DESC, form_completes DESC")
+    
+    respond_to do |format|
+      format.html { }
+      format.json {
+        render :json => @dashboard_driver_types
+      }
+    end
   end
   
   def is_current_data?
