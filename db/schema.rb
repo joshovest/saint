@@ -88,9 +88,8 @@ ActiveRecord::Schema.define(:version => 20121009171211) do
     t.date     "start_date"
     t.integer  "form_views"
     t.integer  "form_completes"
-    t.decimal  "form_complete_rate"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "dashboard_trended_metrics", :force => true do |t|
@@ -127,13 +126,6 @@ ActiveRecord::Schema.define(:version => 20121009171211) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "sites", :force => true do |t|
-    t.string   "name"
-    t.string   "suite_list"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "suites", :force => true do |t|
     t.string   "name"
     t.string   "suite_list"
     t.datetime "created_at", :null => false

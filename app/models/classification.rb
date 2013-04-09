@@ -4,6 +4,9 @@ class Classification < ActiveRecord::Base
   validates :key, presence:true
   validates :type, presence:true
   
+  @brand_matches = nil
+  @cloud_matches = nil
+  
   after_initialize do
     return nil if self.key.nil?
     
@@ -11,11 +14,9 @@ class Classification < ActiveRecord::Base
     self.type = get_type(key_elements)
     if self.valid? && (key_elements.count > 1)
       self.keyword = get_keyword(key_elements)
-      self.branded = get_branded
       self.engine = get_engine(key_elements)
       self.country = get_country(key_elements)
       self.tld = get_tld(key_elements)
-      self.keyword_cloud = get_keyword_cloud
       self.display_country = get_display_country(key_elements)
       self.display_site = get_display_site(key_elements)
       self.display_product = get_display_product(key_elements)
@@ -26,6 +27,30 @@ class Classification < ActiveRecord::Base
   end
   
   public
+    def set_matches(b, c)
+      @brand_matches = b
+      @cloud_matches = c
+      
+      self.branded = get_branded
+      self.keyword_cloud = get_keyword_cloud
+    end
+    
+    def brand_matches=(b)
+      @brand_matches = b
+    end
+    
+    def brand_matches
+      @brand_matches ||=  BrandMatch.find(:all, order: "position")
+    end
+    
+    def cloud_matches=(c)
+      @cloud_matches = c
+    end
+    
+    def cloud_matches
+      @cloud_matches ||=  CloudMatch.find(:all, order: "position")
+    end
+    
     def get_row
       row = [self.key, self.type, self.engine, self.tld, self.name, self.country, self.branded, self.keyword_cloud, self.display_country, self.display_site, self.display_product, self.display_date, self.driver_id]
     end
@@ -117,7 +142,6 @@ class Classification < ActiveRecord::Base
       
       kw = self.keyword.downcase
       is_match = true
-      brand_matches = BrandMatch.find(:all, order: "position")
       brand_matches.each do |bm|
         bm.match_list.downcase!
         matches = bm.match_list.split(",")
@@ -185,7 +209,6 @@ class Classification < ActiveRecord::Base
       
       kw = self.keyword.downcase
       cloud = ""
-      cloud_matches = CloudMatch.find(:all, order: "position")
       cloud_matches.each do |cm|
         cm.match_list.downcase!
         matches = cm.match_list.split(",")

@@ -219,14 +219,18 @@ class Omni
         end
       end
     end
+    
+    # limit match queries
+    @cloud_matches = CloudMatch.find(:all, order: "position")
+    @brand_matches = BrandMatch.find(:all, order: "position")
       
     saint_table = Array.new
     if none_row > 0
       @html += "<h2>Unclassified Rows for <em>#{site.name}</em></h2>\n"
 	  @html += "<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">\n"
 	    
-      #per_page = 10
-      per_page = 1000
+      per_page = 10
+      #per_page = 1000
       current_page = 0
       current_rows = 0
       saint_row = 0
@@ -262,6 +266,7 @@ class Omni
                 row["name"] = HTMLEntities.new.decode row["name"]
                 
                 saint_row = Classification.new({key: row["name"]})
+                saint_row.set_matches(@brand_matches, @cloud_matches)
                 saint_table << {row: saint_row.get_row}
                 
                 if saint_row.valid?
@@ -298,8 +303,8 @@ class Omni
         if failed == true
           @html += "<tr><th colspan=\"15\">*** FAILURE on page #{current_page}! ***</th></tr>\n"
         end
-      end while current_rows >= per_page
-      #end while current_page < 1
+      #end while current_rows >= per_page
+      end while current_page < 1
       
       @html += "</table>\n"
     end
@@ -372,13 +377,13 @@ class Omni
   end
   
   def get_params(suite, els)
-    t_end = Time.new
-    t_start = t_end - (60*60*24*30)
+    d_end = Date.new(Time.now.year, Time.now.month, Time.now.day)
+    d_start = d_end - 30
     params = {
       "reportDescription" => {
         "reportSuiteID" => suite,
-        "dateFrom" => t_start.strftime("%Y-%m-%d"),
-        "dateTo" => t_end.strftime("%Y-%m-%d"),
+        "dateFrom" => d_start.strftime("%Y-%m-%d"),
+        "dateTo" => d_end.strftime("%Y-%m-%d"),
         "metrics" => [
           {"id" => "event11"}
         ],
