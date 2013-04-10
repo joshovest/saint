@@ -229,8 +229,8 @@ class Omni
       @html += "<h2>Unclassified Rows for <em>#{site.name}</em></h2>\n"
 	  @html += "<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">\n"
 	    
-      per_page = 10
-      #per_page = 1000
+      #per_page = 10
+      per_page = 1000
       current_page = 0
       current_rows = 0
       saint_row = 0
@@ -303,8 +303,8 @@ class Omni
         if failed == true
           @html += "<tr><th colspan=\"15\">*** FAILURE on page #{current_page}! ***</th></tr>\n"
         end
-      #end while current_rows >= per_page
-      end while current_page < 1
+      end while current_rows >= per_page
+      #end while current_page < 1
       
       @html += "</table>\n"
     end
