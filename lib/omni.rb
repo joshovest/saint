@@ -199,7 +199,7 @@ class Omni
     @msg = ""
     @html = ""
     failed = false
-    user = User.first
+    user = User.order(:id).first
     suites = site.suite_list.split(",")
     none_rpt = @client.get_report "Report.QueueRanked", get_params(suites.first, [
       {
