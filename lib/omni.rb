@@ -372,7 +372,7 @@ class Omni
     # send notification email
     Rails.logger.debug @msg
     SaintMailer.job_email(@msg, user, failed).deliver
-    
+        
     @html
   end
   
