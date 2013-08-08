@@ -20,6 +20,6 @@ class Site < ActiveRecord::Base
   def run_classifications
     require 'omni'
     o = Omni.new
-    html = o.classify(self)
+    html = o.classify(self, params[:max_pages)
   end
 end

@@ -191,7 +191,7 @@ class Omni
     end
   end
   
-  def classify(site)
+  def classify(site, max_pages)
     return if site.nil?
     
     require 'htmlentities'
@@ -230,7 +230,7 @@ class Omni
 	  @html += "<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">\n"
 	    
       #per_page = 10
-      per_page = params[:per_page].nil? ? 1000 : params[:per_page]
+      per_page = 1000
       current_page = 0
       current_rows = 0
       saint_row = 0
@@ -303,7 +303,7 @@ class Omni
         if failed == true
           @html += "<tr><th colspan=\"15\">*** FAILURE on page #{current_page}! ***</th></tr>\n"
         end
-      end while current_rows >= per_page
+      end while (max_pages.nil? ? (current_rows >= per_page) : (current_page < max_pages))
       #end while current_page < 1
       
       @html += "</table>\n"
