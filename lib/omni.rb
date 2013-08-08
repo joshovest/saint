@@ -230,7 +230,7 @@ class Omni
 	  @html += "<table cellpadding=\"1\" cellspacing=\"1\" border=\"1\">\n"
 	    
       #per_page = 10
-      per_page = 1000
+      per_page = params[:per_page].nil? ? 1000 : params[:per_page]
       current_page = 0
       current_rows = 0
       saint_row = 0
