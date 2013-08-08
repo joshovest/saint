@@ -5,7 +5,7 @@ task :schedule_saint => :environment do
   if valid_days.include?(current_time.wday)
     sites = Site.all
     sites.each do |s|
-      s.delay.run_classifications(nil)
+      s.delay.run_classifications
     end
     puts current_time.strftime("Done queuing SAINT scheduler %-m/%-d/%Y.")
   end

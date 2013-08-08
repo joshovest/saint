@@ -17,9 +17,9 @@ class Site < ActiveRecord::Base
     suite_list = self.suite_list.gsub(",", "<br>").html_safe
   end
   
-  def run_classifications(max_pages)
+  def run_classifications
     require 'omni'
     o = Omni.new
-    html = o.classify(self, max_pages)
+    html = o.classify(self)
   end
 end

@@ -14,9 +14,9 @@ class ClassificationsController < ApplicationController
     sites.each do |s|
       if Rails.env.production?
         flash[:success] = "Your job was queued. You will receive an email when your request is completed and the SAINT rows have been submitted to Omniture."
-        s.delay.run_classifications(params[:max_pages])
+        s.delay.run_classifications
       else
-        @html += s.run_classifications(params[:max_pages])
+        @html += s.run_classifications
       end
     end
   end
