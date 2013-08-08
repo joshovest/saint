@@ -16,7 +16,7 @@ class ClassificationsController < ApplicationController
         flash[:success] = "Your job was queued. You will receive an email when your request is completed and the SAINT rows have been submitted to Omniture."
         s.delay.run_classifications(params[:max_pages])
       else
-        @html += s.run_classifications (params[:max_pages].nil? ? nil : params[:max_pages].to_i)
+        @html += s.run_classifications(params[:max_pages])
       end
     end
   end

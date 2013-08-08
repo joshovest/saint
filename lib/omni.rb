@@ -196,6 +196,8 @@ class Omni
     
     require 'htmlentities'
     
+    max_pages = max_pages.to_i if !max_pages.nil?
+    
     @msg = ""
     @html = ""
     failed = false
