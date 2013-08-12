@@ -232,7 +232,6 @@ class Omni
       #per_page = 10
       per_page = 1000
       current_page = 0
-      current_page = 15
       current_rows = 0
       saint_row = 0
       begin
@@ -305,7 +304,7 @@ class Omni
           @html += "<tr><th colspan=\"15\">*** FAILURE on page #{current_page}! ***</th></tr>\n"
         end
       #end while current_rows >= per_page
-      end while current_page < 30
+      end while current_page < 20
       
       @html += "</table>\n"
     end
