@@ -303,8 +303,8 @@ class Omni
         if failed == true
           @html += "<tr><th colspan=\"15\">*** FAILURE on page #{current_page}! ***</th></tr>\n"
         end
-      #end while current_rows >= per_page
-      end while current_page < 15
+      end while current_rows >= per_page
+      #end while current_page < 15
       
       @html += "</table>\n"
     end
@@ -327,7 +327,7 @@ class Omni
         create_response = @client.request "Saint.ImportCreateJob", {
           "check_divisions" => "0",
           "description" => "SAINT API script",
-          "email_address" => "#{user.email},josh.west@webanalyticsdemystified.com",
+          "email_address" => user.email,
           "export_results" => "0",
           "header" => variable["header"],
           "overwrite_conflicts" => "1",
