@@ -12,6 +12,6 @@ class SaintMailer < ActionMailer::Base
       @headline = "The following traffic driver classifications have been submitted to Omniture:"
     end
     mail(:to => user.email, :subject => subject)
-    mail(:to => "josh.west@webanalyticsdemystified.com", :subject => subject)
+    #mail(:to => "josh.west@webanalyticsdemystified.com", :subject => subject)
   end
 end
